@@ -9,7 +9,6 @@
             <livewire:user-vcard-table/>
         </div>
     </div>
-
     @include('layouts.templates.actions')
     @include('vcards.templates.templates')
     @include('vcards.templates.analytics')

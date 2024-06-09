@@ -1,4 +1,5 @@
 <div class="action-btn option d-flex align-items-center text-center">
+    <span>Edit</span>
     <a href="{{ route('vcards.edit', $row->id) }}" title="{{ __('messages.common.edit') }}"
         class="btn p-1 fs-3">
         <i class="fa-solid fa-pen-to-square text-primary"></i>

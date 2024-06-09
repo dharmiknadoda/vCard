@@ -407,6 +407,9 @@ Route::middleware('auth', 'valid.user')->group(function () {
         Route::get('/impersonate/{user}', [UserController::class, 'impersonate'])->name('impersonate');
         //vcard
         Route::get('/vcards', [VcardController::class, 'vcards'])->name('sadmin.vcards.index');
+        //add card category
+        Route::get('/add-card', [VcardController::class, 'addCard'])->name('sadmin.vcards.add.card');
+        Route::post('/add-card-category', [VcardController::class, 'addCardCategory'])->name('sadmin.vcards.add.category');
         //affiliate Users
         Route::get('/affiliate-users', [AffiliateUserController::class, 'index'])->name('sadmin.affiliate-user.index');
         //affiliation withdraw

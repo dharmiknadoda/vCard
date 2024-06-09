@@ -20,9 +20,12 @@
                 <div class="login-form">
                     <div class="px-sm-10 px-6 mb-5  h-100 w-100">
                         <div class="text-center">
-                            <div class="image image-mini me-3 mb-0 mt-10">
+                            <div class="me-3 mb-0 mt-10">
                                 <a href="{{ route('home') }}" class="image">
-                                    <img alt="Logo" src="{{ getLogoUrl() }}" class="img-fluid logo-fix-size">
+                                    <img alt="Logo" src="{{ getLogoUrl() }}" class="img-fluid logo-fix-size" style="max-height: 166px !important;
+            max-width: 166px !important;
+            width: 100% !important;
+            object-fit: cover !important;">
                                 </a>
                             </div>
                             <span class="text-gray-900 fs-1 fw-bold">{{ getAppName() }}</span>
@@ -40,25 +43,26 @@
                                         {{ __('messages.user.email') . ':' }}<span class="required"></span>
                                     </label>
                                     <input name="email" type="email" class="form-control" id="email"
-                                        aria-describedby="emailHelp" required
-                                        placeholder=" {{ __('messages.user.email') }}">
+                                           aria-describedby="emailHelp" required
+                                           placeholder=" {{ __('messages.user.email') }}">
                                 </div>
                                 <div class="mb-sm-7 mb-4 element">
                                     <div class="d-flex justify-content-between">
                                         <label for="password"
-                                            class="form-label">{{ __('messages.user.password') . ':' }}<span
+                                               class="form-label">{{ __('messages.user.password') . ':' }}<span
                                                 class="required"></span></label>
                                         @if (Route::has('password.request'))
                                             <a href="{{ route('password.request') }}"
-                                                class="link-info fs-6 text-decoration-none">
+                                               class="link-info fs-6 text-decoration-none">
                                                 {{ __('messages.common.forgot_your_password') . '?' }}
                                             </a>
                                         @endif
                                     </div>
                                     <div class="mb-3 position-relative ">
-                                        <input name="password" type="password" class="form-control" id="password" required
-                                            placeholder="{{ __('messages.user.password') }}" aria-label="Password"
-                                            data-toggle="password">
+                                        <input name="password" type="password" class="form-control" id="password"
+                                               required
+                                               placeholder="{{ __('messages.user.password') }}" aria-label="Password"
+                                               data-toggle="password">
                                         <span
                                             class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600">
                                             <i class="bi bi-eye-slash-fill"></i>
@@ -68,14 +72,16 @@
                                 <div class="mb-sm-7 mb-4 form-check element ms-5">
                                     <input type="checkbox" class="form-check-input" id="remember_me">
                                     <label class="form-check-label"
-                                        for="remember_me">{{ __('messages.common.remember_me') }}</label>
+                                           for="remember_me">{{ __('messages.common.remember_me') }}</label>
                                 </div>
                                 <div class="d-grid element">
-                                    <button type="submit" class="btn login-btn">{{ __('messages.common.login') }}</button>
+                                    <button type="submit"
+                                            class="btn login-btn">{{ __('messages.common.login') }}</button>
                                 </div>
                                 @if (getSuperAdminSettingValue('register_enable'))
                                     <div class="d-flex align-items-center mb-10 mt-4 element">
-                                        <span class="text-gray-700 me-2">{{ __('messages.common.new_here') . '?' }}</span>
+                                        <span
+                                            class="text-gray-700 me-2">{{ __('messages.common.new_here') . '?' }}</span>
                                         <a href="{{ route('register') }}" class="link-info fs-6 text-decoration-none">
                                             {{ __('messages.common.create_an_account') }}
                                         </a>
@@ -84,14 +90,14 @@
                                 <div class="d-grid mt-4">
                                     @if (config('app.google_client_id') && config('app.google_client_secret') && config('app.google_redirect'))
                                         <a href="{{ route('social.login', 'google') }}"
-                                            class="btn btn-danger d-flex align-items-center justify-content-center mb-sm-5 mb-4">
+                                           class="btn btn-danger d-flex align-items-center justify-content-center mb-sm-5 mb-4">
                                             <i
                                                 class="fa-brands fa-google fs-2 me-3"></i>{{ __('messages.placeholder.login_via_google') }}
                                         </a>
                                     @endif
                                     @if (config('app.facebook_app_id') && config('app.facebook_app_secret') && config('app.facebook_redirect'))
                                         <a href="{{ route('social.login', 'facebook') }}"
-                                            class="btn btn-info d-flex align-items-center justify-content-center">
+                                           class="btn btn-info d-flex align-items-center justify-content-center">
                                             <i
                                                 class="fa-brands fa-facebook-f fs-2 me-3"></i>{{ __('messages.placeholder.login_via_facebook') }}
                                         </a>

@@ -23,7 +23,14 @@
     <li class="nav-item {{ Request::is('sadmin/vcard*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('sadmin.vcards.index') }}">
             <span class="aside-menu-icon pe-3"><i class="fas fa-id-card"></i></span>
-            <span class="aside-menu-title">{{ __('messages.vcards') }}</span>
+            <span class="aside-menu-title">{{--{{ __('messages.vcards') }}--}}Cards</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ Request::is('sadmin/addCard*') ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('sadmin.vcards.add.card') }}">
+            <span class="aside-menu-icon pe-3"><i class="fas fa-id-card"></i></span>
+            <span class="aside-menu-title">{{--{{ __('messages.vcards') }}--}}Card Category</span>
         </a>
     </li>
 
@@ -65,14 +72,14 @@
         </a>
     </li>
 
-{{--
     <li class="nav-item {{ Request::is('sadmin/affiliate-users*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page"
             href="{{ route('sadmin.affiliate-user.index') }}">
             <span class="aside-menu-icon pe-3"><i class="fas fa-user-group"></i></span>
             <span class="aside-menu-title">{{ __('messages.vcard.affiliate_user') }}</span>
         </a>
-    </li> --}}
+    </li>
+
 
     <li class="nav-item {{ Request::is('sadmin/affiliation-transactions*') || Request::is('sadmin/affiliate-users*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page"
@@ -104,12 +111,13 @@
         </a>
     </li>
 
-    {{-- <li class="nav-item {{ Request::is('sadmin/languages*') ? 'active' : '' }}">
+ <li class="nav-item {{ Request::is('sadmin/languages*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('languages.index') }}">
             <span class="aside-menu-icon pe-3"><i class="fa fa-language"></i></span>
             <span class="aside-menu-title">{{ __('messages.languages.languages') }}</span>
         </a>
-    </li> --}}
+    </li>
+
     <li class="nav-item {{ Request::is('sadmin/coupon-codes*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('coupon-codes.index') }}">
             <span class="aside-menu-icon pe-3"><i class="fa-solid fa-tags"></i></span>
@@ -154,10 +162,9 @@
     <li class="nav-item {{ Request::is('admin/vcard*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('vcards.index') }}">
             <span class="aside-menu-icon pe-3"><i class="fas fa-id-card"></i></span>
-            <span class="aside-menu-title">{{ __('messages.vcards') }}</span>
+            <span class="aside-menu-title">{{--{{ __('messages.vcards') }}--}}Cards</span>
         </a>
     </li>
-
 
     <li class="nav-item {{ Request::is('admin/inquiries*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('inquiries.index') }}">

@@ -12,13 +12,17 @@
             </span>
             <div class="d-sm-flex">
                 <div class="input-group">
-                    {{ Form::text('url_alias', isset($vcard) ? $vcard->url_alias : null, ['class' => 'form-control ms-1 vcard-url-alias', 'id' => 'vcard-url-alias', 'placeholder' => __('messages.form.my_vcard_url')]) }}
+                    {{ Form::text('url_alias', isset($vcard) ? $vcard->url_alias : null, ['class' => 'form-control ms-1 vcard-url-alias', 'id' => 'vcard-url-alias', 'placeholder' => __('messages.form.my_vcard_url'),'disabled' => isset($vcard)]) }}
                     <button class="btn btn-secondary" type="button" id="generate-url-alias"><i
                             class="fa-solid fa-arrows-rotate"></i></button>
                 </div>
             </div>
             <div id="error-url-alias-msg" class="text-danger ms-2 fs-6 d-none fw-light">This URL Alias is already in use
             </div>
+        </div>
+        <div class="col-lg-6 mb-7">
+            {{ Form::label('name', __('messages.vcard.card_category') . ':', ['class' => 'form-label required']) }}
+            {{ Form::select('card_category', getCardCategory(), isset($vcard) ? $vcard->card_category : null, ['class' => 'form-control', 'data-control' => 'select2']) }}
         </div>
         <div class="col-lg-6 mb-7">
             {{ Form::label('name', __('messages.vcard.vcard_name') . ':', ['class' => 'form-label required']) }}
@@ -1031,3 +1035,7 @@
         </div>
     </div>
 @endif
+<script>
+    $('#vcard-id').select2({
+    });
+</script>

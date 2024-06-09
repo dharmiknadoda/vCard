@@ -1,3 +1,10 @@
+<?php
+use App\Models\Vcard;
+use Illuminate\Support\Facades\Auth;
+$user = Auth::user();
+$cardId = Vcard::where('tenant_id',$user->tenant_id)->pluck('id')->first();
+$updateCardId = (isset($cardId)) ? $cardId : 0;
+?>
 <header class='d-flex align-items-center justify-content-between flex-grow-1 header px-3 px-xl-0'>
     <button type="button" class="btn px-0 aside-menu-container__aside-menubar d-block d-xl-none sidebar-btn">
         <i class="fa-solid fa-bars fs-1"></i>
@@ -12,6 +19,7 @@
         </div>
     </nav>
     <ul class="nav align-items-center flex-nowrap">
+        <a href="{{ route('vcards.edit', $updateCardId) }}" class="btn btn-success">Edit Card</a>
         @if(getLogInUser()->theme_mode)
             <li class="px-xxl-3 px-2">
                 <a data-turbo="false" href="{{ route('mode.theme') }}" title="{{__('messages.tooltip.light_mode')}}">
@@ -135,11 +143,16 @@
                 </div>
             </div>
         </li>
-        <li>
+        {{--<li>
             <button type="button" class="btn px-0 d-block d-xl-none header-btn pb-2">
                 <i class="fa-solid fa-bars fs-1"></i>
             </button>
-        </li>
+        </li>--}}
     </ul>
 </header>
 <div class="bg-overlay" id="nav-overly"></div>
+<script>
+    $(document).ready(function (){
+
+    })
+</script>
