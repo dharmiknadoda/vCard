@@ -433,7 +433,6 @@
                     </div>
                 @endif
             @endif
-            @endif
             {{-- insta feed --}}
             @if ((isset($managesection) && $managesection['insta_embed']) || empty($managesection))
                 @if (checkFeature('instagramEmbed') && $vcard->instagramEmbed->count())

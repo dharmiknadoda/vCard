@@ -309,6 +309,7 @@ return [
         'total_deactive_users' => 'Total DeActive Users',
         'total_vcards' => 'Total VCards',
         'total__active_vcards' => 'Total Active VCards',
+        'total__view_vcards' => 'Total View Cards',
         'edit_card' => 'Edit Your Card',
         'total__deactive_vcards' => 'Total Deactivated VCards',
         'total_plans' => 'Total Plans',
