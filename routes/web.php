@@ -541,6 +541,10 @@ Route::middleware('auth', 'valid.user')->group(function () {
 
         Route::get('/nfc/payment-status/{transaction}', [NfcOrdersController::class, 'updatePaymentStatus'])->name('nfc.payment.status');
         Route::get('/nfc/order-status/{order}', [NfcOrdersController::class, 'updateOrderStatus'])->name('nfc.order.status');
+        Route::get('/category-edit/{id}',[VcardController::class,'categoryEdit'])->name('category.edit');
+        Route::post('/category-update/{id}',[VcardController::class,'categoryUpdate'])->name('category.update');
+        Route::delete('/card-category-destroy/{id}', [VcardController::class, 'cardCategoryDestroy'])->name('card.category.destroy');
+        Route::get('/create-card-category', [VcardController::class, 'createCardCategory'])->name('create.card.category');
     });
 
     //Show Withdrawal data

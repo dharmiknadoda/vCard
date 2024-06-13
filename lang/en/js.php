@@ -5,6 +5,7 @@ return [
     'today' => 'Today',
     'month' => 'Month',
     'vcard_name' => 'VCard Name',
+    'card_category'=>'Card Category',
     'email' => 'Email',
     'phone' => 'Phone',
     'user' => 'User',

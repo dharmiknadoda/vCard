@@ -17,6 +17,11 @@
                     <label for="exampleInputSelect2" class="form-label">{{ __('messages.vcard.status') }}</label>
                     {{ Form::select('type', [2 => 'Select Status'] + App\Models\Vcard::STATUS, null, ['class' => 'form-control form-select', 'data-control' => 'select2', 'id' => 'status', 'wire:ignore']) }}
                 </div>
+
+                <div class="mb-5">
+                    <label for="exampleInputSelect2" class="form-label">Category</label>
+                    {{ Form::select('type', [3 => 'Select category'] + getCardCategory(), null, ['class' => 'form-control form-select', 'data-control' => 'select2', 'id' => 'category', 'wire:ignore']) }}
+                </div>
                 <div class="d-flex justify-content-end">
                     <button type="reset" id="vcardResetFilter"
                         class="btn btn-secondary">{{ __('messages.common.reset') }}</button>
