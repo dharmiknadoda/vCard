@@ -3,6 +3,7 @@
     {{__('messages.vcard.edit_vcard')}}
 @endsection
 @section('content')
+    <?php $templates = \App\Models\Template::all(); ?>
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <h1>{{__('messages.vcard.add_card_category')}}</h1>
@@ -24,7 +25,7 @@
                 <div class="col-lg-12">
                     <form method="post" action="{{ route('sadmin.vcards.add.category') }}">
                         @csrf
-{{--                        @method('PUT')--}}
+                        {{--                        @method('PUT')--}}
                         <div class="mb-5 ps-5 pt-5">
                             <label for="title" class="form-label required">Name:</label>
                             <span data-bs-toggle="tooltip" data-placement="top"
@@ -38,6 +39,29 @@
                         </span>
                             <input class="form-control" placeholder="Category name" required="" maxlength="34"
                                    name="name" type="text">
+                            <div class="col-lg-12 mb-3 mt-4">
+                                <label class="form-label required">{{ __('messages.vcard.select_template') }}:</label>
+                            </div>
+                            <div class="form-group mb-7 vcard-template">
+                                <div class="row">
+                                    <input type="hidden" name="card_template_id" class="card-template-id">
+                                    @foreach ($templates as $id => $template)
+                                        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-3 templatecard"
+                                             data-id='{{ $template->id }}'>
+                                            <div class="img-radio-multiple img-thumbnail"
+                                                 data-id="{{ $template->id }}" data-key = '{{ $id }}'>
+                                                <img src="{{ asset($template->path)}}" alt="Template">
+                                                @if ($id == 22)
+                                                    <div class="ribbon-wrapper">
+                                                        <div
+                                                            class="ribbon fw-bold">{{ __('messages.feature.dynamic_vcard') }}</div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
                             <button class="btn btn-primary mt-5" type="submit">Submit</button>
                         </div>
                     </form>
@@ -52,5 +76,26 @@
             </div>
         </div>
     </div>
-
+    <script>
+        var templateIds = [];
+        $(".img-radio-multiple").click(function () {
+            var id = $(this).attr('data-id');
+            var key = $(this).attr('data-key');
+            if ($(this).hasClass("img-border")) {
+                $(this).removeClass("img-border");
+                var index = templateIds.indexOf(id);
+                if (index !== -1) {
+                    templateIds.splice(index, 1);
+                }
+            } else {
+                $(this).addClass("img-border");
+                $("#templateId").val(id);
+                templateIds.push(id);
+            }
+            var templateId = JSON.stringify(templateIds);
+            if(templateId){
+                $(".card-template-id").val(templateId)
+            }
+        });
+    </script>
 @endsection

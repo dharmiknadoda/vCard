@@ -543,7 +543,7 @@ Route::middleware('auth', 'valid.user')->group(function () {
         Route::get('/nfc/order-status/{order}', [NfcOrdersController::class, 'updateOrderStatus'])->name('nfc.order.status');
         Route::get('/category-edit/{id}',[VcardController::class,'categoryEdit'])->name('category.edit');
         Route::post('/category-update/{id}',[VcardController::class,'categoryUpdate'])->name('category.update');
-        Route::delete('/card-category-destroy/{id}', [VcardController::class, 'cardCategoryDestroy'])->name('card.category.destroy');
+        Route::delete('/cardscategory-destroy/{id}', [VcardController::class, 'cardCategoryDestroy'])->name('card.category.destroy');
         Route::get('/create-card-category', [VcardController::class, 'createCardCategory'])->name('create.card.category');
     });
 
@@ -598,6 +598,7 @@ Route::prefix('admin')->middleware('subscription', 'auth', 'valid.user', 'role:a
 
     Route::get('/storage',[StorageLimitController::class,'index'])->name('user.storage');
     Route::post('/storage-chart',[StorageLimitController::class,'storageChart'])->name('user.storage.chart');
+    Route::any('/auto-save-category', [VcardController::class, 'autoSaveCategory'])->name('auto.save.category');
 });
 
 Route::get('/v')->name('vcard.defaultIndex');

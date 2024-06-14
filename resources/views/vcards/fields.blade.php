@@ -3,6 +3,26 @@
     @if (isset($vcard))
         <input type="hidden" id="vcardId" value="{{ $vcard->id }}">
     @endif
+    <script>
+        function cardCategory(category){
+            var selectedOption = category.find('option:selected');
+            var templatId = selectedOption.attr('data-id');
+            var cardCategoryId = category.val();
+            var cardId = category.attr('data-user-id');
+
+            $.ajax({
+                method:'post',
+                url:'{{ route('auto.save.category') }}',
+                data:{
+                    cardCategoryId:cardCategoryId,
+                    cardId : cardId,
+                },
+                success : function (){
+
+                }
+            })
+        }
+    </script>
     <div class="row" id="basic">
         <div class="col-lg-12 mb-7">
             {{ Form::label('url_alias', __('messages.vcard.url_alias') . ':', ['class' => 'form-label required']) }}
@@ -22,7 +42,13 @@
         </div>
         <div class="col-lg-6 mb-7">
             {{ Form::label('name', __('messages.vcard.card_category') . ':', ['class' => 'form-label required']) }}
-            {{ Form::select('card_category', getCardCategory(), isset($vcard) ? $vcard->card_category : null, ['class' => 'form-control', 'data-control' => 'select2']) }}
+            <select name="card_category" class="form-control card-category" data-control="select2" onchange="cardCategory($(this))" data-user-id = '{{ $vcard->id ?? '' }}'>
+                @foreach(getCardCategory() as $category)
+                    <option value="{{ $category['id'] }}" data-id="{{ $category['template_id'] }}" {{ isset($vcard) && $vcard->card_category == $category['id'] ? 'selected' : '' }}>
+                        {{ $category['name'] }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <div class="col-lg-6 mb-7">
             {{ Form::label('name', __('messages.vcard.vcard_name') . ':', ['class' => 'form-label required']) }}
@@ -260,9 +286,14 @@
     <div class="form-group mb-7 vcard-template">
         <div class="row">
             <input type="hidden" name="template_id" id="templateId" value="{{ $vcard->template_id }}">
+            <?php
+                $templateIdsArray = \App\Models\CardCategory::where('id',$vcard->card_category)->first();
+                $templateIds = json_decode($templateIdsArray->template_id);
+            ?>
             @foreach ($templates as $id => $url)
+                @if(in_array($id,$templateIds))
                 <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-3 templatecard">
-                    <div class="img-radio img-thumbnail {{ $id == 11 ? 'screen vcard_11' : '' }} {{ $vcard->template_id == $id ? 'img-border' : '' }} @if ($id == 22) ribbon @endif"
+                    <div class="img-radio img-thumbnail card-category-hide {{ $id == 11 ? 'screen vcard_11' : '' }} {{ $vcard->template_id == $id ? 'img-border' : '' }} @if ($id == 22) ribbon @endif"
                         data-id="{{ $id }}">
                         <img src="{{ $url }}" alt="Template">
                         @if ($id == 22)
@@ -272,6 +303,7 @@
                         @endif
                     </div>
                 </div>
+                @endif
             @endforeach
         </div>
     </div>
@@ -1035,7 +1067,3 @@
         </div>
     </div>
 @endif
-<script>
-    $('#vcard-id').select2({
-    });
-</script>

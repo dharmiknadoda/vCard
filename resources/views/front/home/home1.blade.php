@@ -2,6 +2,16 @@
 @section('title')
     {{ getAppName() }}
 @endsection
+<style>
+    @font-face {
+        font-family: 'Seasons';
+        src: url('path/to/Seasons-Regular.woff2') format('woff2'),
+        url('path/to/Seasons-Regular.woff') format('woff');
+    }
+    body {
+        font-family: 'Seasons', serif !important;
+    }
+</style>
 @section('content')
     <!-- start hero section -->
     <section class="hero-section position-relative pb-60">
