@@ -39,6 +39,7 @@ class TemplatesSeeder extends Seeder
             'vcard24' => ('assets/img/templates/vcard24.png'),
             'vcard25' => ('assets/img/templates/vcard25.png'),
             'vcard26' => ('assets/img/templates/vcard26.png'),
+            'vcard27' => ('assets/img/templates/vcard26.png'),
         ];
 
         foreach ($templates as $name => $template) {
