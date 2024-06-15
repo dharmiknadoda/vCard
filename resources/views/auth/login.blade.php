@@ -34,6 +34,17 @@
                             <div class="col-md-12 width-540 mt-5">
                                 @include('flash::message')
                                 @include('layouts.errors')
+                                <?php if(session()->has('login_error')): ?>
+                                <div class="alert alert-danger">
+                                    <div>
+                                        <div class="d-flex">
+                                            <i class="fa-solid fa-face-frown me-5"></i>
+                                            <span class="mt-1">Email already exists. Please login using your password</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php session()->forget('login_error'); ?>
+                                <?php endif; ?>
                             </div>
                             <h1 class="text-center mb-7 mt-5 fs-2 fw-bold">{{ __('auth.sign_in') }}</h1>
                             <form method="POST" action="{{ route('login') }}">
@@ -78,18 +89,9 @@
                                     <button type="submit"
                                             class="btn login-btn">{{ __('messages.common.login') }}</button>
                                 </div>
-                                @if (getSuperAdminSettingValue('register_enable'))
-                                    <div class="d-flex align-items-center mb-10 mt-4 element">
-                                        <span
-                                            class="text-gray-700 me-2">{{ __('messages.common.new_here') . '?' }}</span>
-                                        <a href="{{ route('register') }}" class="link-info fs-6 text-decoration-none">
-                                            {{ __('messages.common.create_an_account') }}
-                                        </a>
-                                    </div>
-                                @endif
                                 <div class="d-grid mt-4">
                                     @if (config('app.google_client_id') && config('app.google_client_secret') && config('app.google_redirect'))
-                                        <a href="{{ route('social.login', 'google') }}"
+                                        <a href="{{ route('google.auth') }}"
                                            class="btn btn-danger d-flex align-items-center justify-content-center mb-sm-5 mb-4">
                                             <i
                                                 class="fa-brands fa-google fs-2 me-3"></i>{{ __('messages.placeholder.login_via_google') }}
@@ -103,6 +105,15 @@
                                         </a>
                                     @endif
                                 </div>
+                                @if (getSuperAdminSettingValue('register_enable'))
+                                    <div class="d-flex align-items-center mb-10 mt-4 element">
+                                        <span
+                                            class="text-gray-700 me-2">{{ __('messages.common.new_here') . '?' }}</span>
+                                        <a href="{{ route('register') }}" class="link-info fs-6 text-decoration-none">
+                                            {{ __('messages.common.create_an_account') }}
+                                        </a>
+                                    </div>
+                                @endif
                             </form>
                         </div>
                     </div>

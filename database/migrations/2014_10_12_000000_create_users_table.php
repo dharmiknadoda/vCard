@@ -21,7 +21,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(1);
             $table->string('language')->default('en')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('google_id')->nullable();
             $table->string('tenant_id', 191);
             $table->rememberToken();
             $table->timestamps();

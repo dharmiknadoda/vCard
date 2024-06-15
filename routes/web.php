@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Middleware\XSS;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\NfcOrdersTable;
@@ -76,6 +77,9 @@ use App\Http\Controllers\VcardSubscribersController;
 Route::get('/', function () {
     return (! Auth::check()) ? \redirect(route('login')) : Redirect::to('/');
 });
+
+Route::get('auth/google',[GoogleAuthController::class,'redirect'])->name('google.auth');
+Route::get('auth/google/call-back',[GoogleAuthController::class,'callbackGoogle'])->name('callback.google');
 
 //social logins
 Route::get('/login/{provider}', [SocialAuthController::class, 'redirectToSocial'])->name('social.login');
