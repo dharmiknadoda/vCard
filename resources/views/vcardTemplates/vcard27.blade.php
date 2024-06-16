@@ -148,11 +148,11 @@
             </div>
             {{-- profile data --}}
             <div class="profile-section px-30">
-                <div class="cart-img">
-                    <img src="{{ asset('assets/img/vcard26/cart.png') }}" alt="cart-img" loading="lazy" />
+                <div class="cart-img w-25 p-5">
+                    <img src="{{ asset('assets/img/vcard27/pat-icon.png') }}" alt="" loading="lazy" />
                 </div>
-                <div class="percentage-img text-end">
-                    <img src="{{ asset('assets/img/vcard26/percentage.png') }}" alt="percentage-img"
+                <div class="percentage-img w-25 p-5 text-end">
+                    <img src="{{ asset('assets/img/vcard27/pat-icon-2.png') }}" alt=""
                         loading="lazy" />
                 </div>
                 <div class="card d-flex align-items-center justify-content-center mb-3">
@@ -167,9 +167,9 @@
                                     <i class="verification-icon bi-patch-check-fill"></i>
                                 @endif
                             </h4>
-                            <p class="fs-18 text-gray-100 mb-0">{{ ucwords($vcard->occupation) }}</p>
-                            <p class="fs-18 text-gray-100 mb-0">{{ ucwords($vcard->job_title) }}</p>
-                            <p class="fs-18 text-gray-100 mb-0">{{ ucwords($vcard->company) }}</p>
+                            <p class="fs-18 text-gray-100 mb-0">{{--{{ ucwords($vcard->occupation) }}--}} Pet Name</p>
+                            <p class="fs-18 text-gray-100 mb-0">{{--{{ ucwords($vcard->job_title) }}--}} Breed</p>
+                            <p class="fs-18 text-gray-100 mb-0">{{--{{ ucwords($vcard->company) }}--}} Very friendly</p>
                         </div>
                     </div>
                 </div>
@@ -187,11 +187,99 @@
                     @endif
                 </div>
                 <div class="text-light profile-desc">
-                <p class="fs-6 text-center mb-0 text-light">
-                    {!! $vcard->description !!}
-                </p>
+{{--                <p class="fs-6 text-center mb-0 text-light">--}}
+{{--                    {!! $vcard->description !!}--}}
+{{--                </p>--}}
                 </div>
             </div>
+            {{-- about --}}
+            <div class="contact-section px-30 mt-4 mb-5 pb-2">
+                <div class="section-heading text-center">
+                    <h2 class="mb-0">{{ __('messages.about_us_card.about') }}</h2>
+                </div>
+                <div class="section-heading text-center mb-0 text-light">
+                    <p>{!! $vcard->description !!}</p>
+                </div>
+                <div class="row">
+                    @if ($vcard->email)
+                        <div class="col-sm-6 mb-4 pb-sm-2">
+                            <div class="contact-box d-flex align-items-center">
+                                <div class="contact-icon d-flex justify-content-center align-items-center me-2">
+                                    <img src="{{ asset('assets/img/vcard26/email.png') }}" loading="lazy" />
+                                </div>
+                                <div class="contact-desc">
+                                    <a href="mailto:{{ $vcard->email }}"
+                                       class="text-white fs-6 fw-5">{{ $vcard->email }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($vcard->alternative_email)
+                        <div class="col-sm-6 mb-4 pb-sm-2">
+                            <div class="contact-box d-flex align-items-center">
+                                <div class="contact-icon d-flex justify-content-center align-items-center me-2">
+                                    <img src="{{ asset('assets/img/vcard26/email.png') }}" loading="lazy" />
+                                </div>
+                                <div class="contact-desc">
+                                    <a href="mailto:{{ $vcard->alternative_email }}"
+                                       class="text-white fs-6 fw-5">{{ $vcard->alternative_email }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($vcard->phone)
+                        <div class="col-sm-6 mb-4 pb-sm-2">
+                            <div class="contact-box d-flex align-items-center">
+                                <div class="contact-icon d-flex justify-content-center align-items-center me-2">
+                                    <img src="{{ asset('assets/img/vcard26/phone.png') }}" loading="lazy" />
+                                </div>
+                                <div class="contact-desc">
+                                    <a href="tel:+{{ $vcard->region_code }}{{ $vcard->phone }}"
+                                       class="text-white fs-6 fw-5">+{{ $vcard->region_code }}{{ $vcard->phone }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($vcard->alternative_phone)
+                        <div class="col-sm-6 mb-4 pb-sm-2">
+                            <div class="contact-box d-flex align-items-center">
+                                <div class="contact-icon d-flex justify-content-center align-items-center me-2">
+                                    <img src="{{ asset('assets/img/vcard26/phone.png') }}" loading="lazy" />
+                                </div>
+                                <div class="contact-desc">
+                                    <a href="tel:+{{ $vcard->alternative_region_code }}{{ $vcard->alternative_phone }}"
+                                       class="text-white fs-6 fw-5">+{{ $vcard->alternative_region_code }}{{ $vcard->alternative_phone }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($vcard->dob)
+                        <div class="col-sm-6 mb-sm-0 mb-4">
+                            <div class="contact-box d-flex align-items-center">
+                                <div class="contact-icon d-flex justify-content-center align-items-center me-2">
+                                    <img src="{{ asset('assets/img/vcard26/dob.png') }}" loading="lazy" />
+                                </div>
+                                <div class="contact-desc">
+                                    <p class="mb-0 text-white fs-6 fw-5">{{ $vcard->dob }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($vcard->location)
+                        <div class="col-sm-6">
+                            <div class="contact-box d-flex align-items-center">
+                                <div class="contact-icon d-flex justify-content-center align-items-center me-2">
+                                    <img src="{{ asset('assets/img/vcard26/location.png') }}" loading="lazy" />
+                                </div>
+                                <div class="contact-desc">
+                                    <p class="text-white mb-0 fs-6 fw-5">{!! ucwords($vcard->location) !!}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             {{-- contact --}}
             @if ((isset($managesection) && $managesection['contact_list']) || empty($managesection))
                 <div class="contact-section px-30 mt-4 mb-5 pb-2">
@@ -618,9 +706,9 @@
                         <img src="{{ asset('assets/img/vcard26/percrentage-2.png') }}" alt="percentage-img2"
                             loading="lazy" />
                     </div>
-                    <div class="bag-img text-end">
-                        <img src="{{ asset('assets/img/vcard26/bag.png') }}" alt="bag-img" loading="lazy" />
-                    </div>
+{{--                    <div class="bag-img text-end">--}}
+{{--                        <img src="{{ asset('assets/img/vcard26/bag.png') }}" alt="bag-img" loading="lazy" />--}}
+{{--                    </div>--}}
                     <div class="section-heading mb-40 pb-40 text-center">
                         <h2 class="mb-0">{{ __('messages.vcard.qr_code') }}</h2>
                     </div>
@@ -681,10 +769,10 @@
             @endphp
             @if ($currentSubs && $currentSubs->plan->planFeature->enquiry_form && $vcard->enable_enquiry_form)
                 <div class="contact-us-section px-30 position-relative">
-                    <div class="add-to-bag-img text-end">
-                        <img src="{{ asset('assets/img/vcard26/add-to-bag.png') }}" alt="add-to-bag-img"
-                            loading="lazy" />
-                    </div>
+{{--                    <div class="add-to-bag-img text-end">--}}
+{{--                        <img src="{{ asset('assets/img/vcard26/add-to-bag.png') }}" alt="add-to-bag-img"--}}
+{{--                            loading="lazy" />--}}
+{{--                    </div>--}}
                     <div class="section-heading text-center mb-40">
                         <h2 class="mb-0">{{ __('messages.contact_us.inquries') }}</h2>
                     </div>

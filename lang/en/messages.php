@@ -491,6 +491,10 @@ return [
         'message' => 'Message',
         'send_message' => 'Send Message',
         'contact' => 'Contact',
+        'about' => 'About me',
+    ],
+    'about_us_card' => [
+        'about' => 'About me',
     ],
     'payment' => [
         'payment_cancel' => 'Payment Cancel',
