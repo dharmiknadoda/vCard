@@ -192,6 +192,18 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="col-sm-6 col-12">
+                                    <div class="form-group mb-3">
+                                        {{ Form::label('2fa authenticator', '2fa authenticator' . ':', ['class' => 'form-label mb-3']) }}
+                                        <label class="form-check form-switch form-switch-sm cursor-pointer">
+                                            <input type="checkbox" name="twoFa_auth" class="form-check-input"
+                                                value="1" {{ $setting['2fa_auth'] == '1' ? 'checked' : '' }}
+                                                id="">
+                                            <span class="form-check-label text-gray-600"
+                                                for="">Enable 2Fa</span>&nbsp;&nbsp;
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">

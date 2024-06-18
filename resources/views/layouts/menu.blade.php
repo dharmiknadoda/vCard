@@ -97,19 +97,19 @@
         </a>
     </li>
 
-    <li class="nav-item {{ Request::is('sadmin/currencies*') ? 'active' : '' }}">
-        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('currencies.index') }}">
-            <span class="aside-menu-icon pe-3"><i class="fas fa-dollar-sign"></i></span>
-            <span class="aside-menu-title">{{ __('messages.currency.currencies') }}</span>
-        </a>
-    </li>
+{{--    <li class="nav-item {{ Request::is('sadmin/currencies*') ? 'active' : '' }}">--}}
+{{--        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('currencies.index') }}">--}}
+{{--            <span class="aside-menu-icon pe-3"><i class="fas fa-dollar-sign"></i></span>--}}
+{{--            <span class="aside-menu-title">{{ __('messages.currency.currencies') }}</span>--}}
+{{--        </a>--}}
+{{--    </li>--}}
 
-    <li class="nav-item {{ Request::is('sadmin/countries*', 'sadmin/states*', 'sadmin/cities*') ? 'active' : '' }}">
-        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('countries.index') }}">
-            <span class="aside-menu-icon pe-3"><i class="fas fa-globe-americas"></i></span>
-            <span class="aside-menu-title">{{ __('messages.country.countries') }}</span>
-        </a>
-    </li>
+{{--    <li class="nav-item {{ Request::is('sadmin/countries*', 'sadmin/states*', 'sadmin/cities*') ? 'active' : '' }}">--}}
+{{--        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('countries.index') }}">--}}
+{{--            <span class="aside-menu-icon pe-3"><i class="fas fa-globe-americas"></i></span>--}}
+{{--            <span class="aside-menu-title">{{ __('messages.country.countries') }}</span>--}}
+{{--        </a>--}}
+{{--    </li>--}}
 
  <li class="nav-item {{ Request::is('sadmin/languages*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('languages.index') }}">

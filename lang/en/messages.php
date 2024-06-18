@@ -385,7 +385,7 @@ return [
         'enable_validation' => 'Enable validation',
         'enable_register' => 'Enable Registration',
         'captcha_enable' => 'Enable Google Captcha',
-        'url_alias_enable' => 'Enable URL Alias',
+            'url_alias_enable' => 'Enable URL Alias',
         'url_alias_edit' => 'Edit URL Alias',
         'selected' => 'Selected',
         'unavailable' => 'Unavailable',

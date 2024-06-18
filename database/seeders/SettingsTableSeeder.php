@@ -27,5 +27,6 @@ class SettingsTableSeeder extends Seeder
         ]);
         Setting::create(['key' => 'prefix_code', 'value' => '91']);
         Setting::create(['key' => 'plan_expire_notification', 'value' => '5']);
+        Setting::create(['key' => '2fa_auth', 'value' => '1']);
     }
 }

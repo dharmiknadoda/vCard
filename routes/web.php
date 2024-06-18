@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\TwoFactorController;
 use App\Http\Middleware\XSS;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\NfcOrdersTable;
@@ -84,6 +85,8 @@ Route::get('auth/google/call-back',[GoogleAuthController::class,'callbackGoogle'
 //social logins
 Route::get('/login/{provider}', [SocialAuthController::class, 'redirectToSocial'])->name('social.login');
 Route::get('/login/{provider}/callback', [SocialAuthController::class, 'handleSocialCallback']);
+
+Route::post('/send-otp',[TwoFactorController::class,'sendOtp'])->name('send.otp');
 
 Route::middleware('setLanguage')->group(function () {
     Route::post('/change-language', [HomeController::class, 'changeLanguage']);
