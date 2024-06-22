@@ -23,22 +23,86 @@
         <div class="card">
             <div class="card-body d-sm-flex position-relative px-2">
                 <div class="col-lg-12">
-                    <form method="post" action="{{ route('sadmin.vcards.add.category') }}">
+                    <form method="post" action="{{ route('sadmin.vcards.add.category') }}" enctype="multipart/form-data">
                         @csrf
                         {{--                        @method('PUT')--}}
                         <div class="mb-5 ps-5 pt-5">
                             <label for="title" class="form-label required">Name:</label>
                             <span data-bs-toggle="tooltip" data-placement="top"
                                   data-bs-original-title="Maximum 34 character allowed">
-                                <svg class="svg-inline--fa fa-circle-question ml-1 mt-1 general-question-mark"
-                                     aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-question"
-                                     role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                     data-fa-i2svg=""><path fill="currentColor"
-                                                            d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 400c-18 0-32-14-32-32s13.1-32 32-32c17.1 0 32 14 32 32S273.1 400 256 400zM325.1 258L280 286V288c0 13-11 24-24 24S232 301 232 288V272c0-8 4-16 12-21l57-34C308 213 312 206 312 198C312 186 301.1 176 289.1 176h-51.1C225.1 176 216 186 216 198c0 13-11 24-24 24s-24-11-24-24C168 159 199 128 237.1 128h51.1C329 128 360 159 360 198C360 222 347 245 325.1 258z"></path></svg>
-                                <!-- <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i> Font Awesome fontawesome.com -->
+                                <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
                         </span>
-                            <input class="form-control" placeholder="Category name" required="" maxlength="34"
+                            <input class="form-control" placeholder="Category name" required="" maxlength="30"
                                    name="name" type="text">
+
+
+                            <label for="title" class="form-label mt-3 required">Title:</label>
+                            <span data-bs-toggle="tooltip" data-placement="top"
+                                  data-bs-original-title="Maximum 34 character allowed">
+                                <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
+                        </span>
+                            <input class="form-control" placeholder="Enter title name" required="" maxlength="20"
+                                   name="title" type="text">
+
+                            <label for="title" class="form-label mt-3 required">Default image:</label>
+                            <span data-bs-toggle="tooltip" data-placement="top"
+                                  data-bs-original-title="jpg,png,jpeg">
+                                <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
+                        </span>
+                            <input class="form-control" required=""
+                                   name="default_image" type="file">
+
+                            <div class="col-lg-12 mb-3 mt-4">
+                                <label class="form-label required">Select Sub Menu:</label>
+                                <div class="d-flex row">
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BUSINESS_HOURS }}">
+                                        <label class="ms-2">Business Hours</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::SERVICES }}"
+                                        >
+                                        <label class="ms-2">Services</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BANNER }}"
+                                        >
+                                        <label class="ms-2">Banner</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::TESTIMONIALS }}"
+                                        >
+                                        <label class="ms-2">Testimonials</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::SOCIAL_LINKS }}"
+                                        >
+                                        <label class="ms-2">Social links - Website</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::FONTS }}"
+                                        >
+                                        <label class="ms-2">Fonts</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::PRIVACY_POLICY }}"
+                                        >
+                                        <label class="ms-2"> Privacy Policy</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::MANAGE_SECTION }}">
+                                        <label class="ms-2">Manage Section</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-lg-12 mb-3 mt-4">
                                 <label class="form-label required">{{ __('messages.vcard.select_template') }}:</label>
                             </div>
@@ -49,7 +113,7 @@
                                         <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-3 templatecard"
                                              data-id='{{ $template->id }}'>
                                             <div class="img-radio-multiple img-thumbnail"
-                                                 data-id="{{ $template->id }}" data-key = '{{ $id }}'>
+                                                 data-id="{{ $template->id }}" data-key='{{ $id }}'>
                                                 <img src="{{ asset($template->path)}}" alt="Template">
                                                 @if ($id == 22)
                                                     <div class="ribbon-wrapper">
@@ -93,7 +157,7 @@
                 templateIds.push(id);
             }
             var templateId = JSON.stringify(templateIds);
-            if(templateId){
+            if (templateId) {
                 $(".card-template-id").val(templateId)
             }
         });

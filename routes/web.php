@@ -606,6 +606,8 @@ Route::prefix('admin')->middleware('subscription', 'auth', 'valid.user', 'role:a
     Route::get('/storage',[StorageLimitController::class,'index'])->name('user.storage');
     Route::post('/storage-chart',[StorageLimitController::class,'storageChart'])->name('user.storage.chart');
     Route::any('/auto-save-category', [VcardController::class, 'autoSaveCategory'])->name('auto.save.category');
+    Route::post('/get-sub-menu', [VcardController::class, 'getSubMenu'])->name('get.sub.menu');
+//    Route::post('/get-default-items', [VcardController::class, 'getDefaultItems'])->name('get.default.items');
 });
 
 Route::get('/v')->name('vcard.defaultIndex');
