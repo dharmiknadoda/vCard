@@ -3,9 +3,10 @@
     {{__('messages.vcard.edit_vcard')}}
 @endsection
 @section('content')
+    <?php $templates = \App\Models\Template::all(); ?>
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-end mb-5">
-            <h1>{{__('messages.vcard.edit_card_category')}}</h1>
+            <h1>Edit Card Category</h1>
             <a class="btn btn-outline-primary float-end"
                href="{{ route('vcards.index') }}">{{ __('messages.common.back') }}</a>
         </div>
@@ -22,21 +23,233 @@
         <div class="card">
             <div class="card-body d-sm-flex position-relative px-2">
                 <div class="col-lg-12">
-                    <form method="post" action="{{ route('category.update',$card->id)}}">
+                    <form method="post" action="{{ route('category.update',$card->id)}}" enctype="multipart/form-data">
                         @csrf
+                        {{--                        @method('PUT')--}}
                         <div class="mb-5 ps-5 pt-5">
                             <label for="title" class="form-label required">Name:</label>
                             <span data-bs-toggle="tooltip" data-placement="top"
                                   data-bs-original-title="Maximum 34 character allowed">
-                                <svg class="svg-inline--fa fa-circle-question ml-1 mt-1 general-question-mark"
-                                     aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-question"
-                                     role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                     data-fa-i2svg=""><path fill="currentColor"
-                                                            d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 400c-18 0-32-14-32-32s13.1-32 32-32c17.1 0 32 14 32 32S273.1 400 256 400zM325.1 258L280 286V288c0 13-11 24-24 24S232 301 232 288V272c0-8 4-16 12-21l57-34C308 213 312 206 312 198C312 186 301.1 176 289.1 176h-51.1C225.1 176 216 186 216 198c0 13-11 24-24 24s-24-11-24-24C168 159 199 128 237.1 128h51.1C329 128 360 159 360 198C360 222 347 245 325.1 258z"></path></svg>
+                                <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
                         </span>
-                            <input class="form-control" placeholder="Category name" required="" value="{{ $card->name }}" maxlength="34"
+                            <input class="form-control" placeholder="Category name" value="{{ $card->name }}"
+                                   required="" maxlength="30"
                                    name="name" type="text">
-                            <button class="btn btn-primary mt-5" type="submit">Update</button>
+
+
+                            <label for="title" class="form-label mt-3 required">Title:</label>
+                            <span data-bs-toggle="tooltip" data-placement="top"
+                                  data-bs-original-title="Maximum 34 character allowed">
+                                <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
+                        </span>
+                            <input class="form-control" placeholder="Enter title name" required="" maxlength="20"
+                                   name="title" value="{{ $card->name_field }}" type="text">
+
+                            <label for="title" class="form-label mt-3">Default image:</label>
+                            <span data-bs-toggle="tooltip" data-placement="top"
+                                  data-bs-original-title="jpg,png,jpeg">
+                                <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
+                        </span>
+                            <input class="form-control"
+                                   name="default_image" type="file">
+
+                            <div class="col-lg-12 mb-3 mt-4">
+                                <label class="form-label required">Select Sub Menu:</label>
+                                <div class="d-flex row">
+                                    <?php
+                                    $subMenuArr = json_decode($card->sub_menu);
+                                    ?>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::BASICS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BASICS }}">
+                                        <label class="ms-2">Basics</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::TEMPLATES,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::TEMPLATES }}">
+                                        <label class="ms-2">Templates</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::DYNAMIC_VCARD,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::DYNAMIC_VCARD }}">
+                                        <label class="ms-2">Dynamic vcard</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::BUSINESS_HOURS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BUSINESS_HOURS }}">
+                                        <label class="ms-2">Business Hours</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::QRCODE_CUSTOMIZE,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::QRCODE_CUSTOMIZE }}">
+                                        <label class="ms-2">Qrcode customize</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::SERVICES,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::SERVICES }}"
+                                        >
+                                        <label class="ms-2">Services</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::BANNER,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BANNER }}"
+                                        >
+                                        <label class="ms-2">Banner</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::PRODUCTS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::PRODUCTS }}"
+                                        >
+                                        <label class="ms-2">Products</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::INSTAGRAM_EMBED,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::INSTAGRAM_EMBED }}"
+                                        >
+                                        <label class="ms-2">Instagram embed</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::TESTIMONIALS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::TESTIMONIALS }}"
+                                        >
+                                        <label class="ms-2">Testimonials</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::IFRAMES,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::IFRAMES }}"
+                                        >
+                                        <label class="ms-2">Iframes</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::APPOINTMENTS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::APPOINTMENTS }}"
+                                        >
+                                        <label class="ms-2">Appointments</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::SOCIAL_LINKS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::SOCIAL_LINKS }}"
+                                        >
+                                        <label class="ms-2">Social links - Website</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::ADVANCED,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::ADVANCED }}"
+                                        >
+                                        <label class="ms-2">ADVANCED</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::FONTS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::FONTS }}"
+                                        >
+                                        <label class="ms-2">Fonts</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::GALLERIES,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::GALLERIES }}"
+                                        >
+                                        <label class="ms-2">Galleries</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::SEO,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::SEO }}"
+                                        >
+                                        <label class="ms-2">Seo</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::BLOGS,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BLOGS }}"
+                                        >
+                                        <label class="ms-2">Blogs</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::PRIVACY_POLICY,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::PRIVACY_POLICY }}"
+                                        >
+                                        <label class="ms-2"> Privacy Policy</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::TERM_CONDITION,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::TERM_CONDITION }}"
+                                        >
+                                        <label class="ms-2">Term condition</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               {{ ($subMenuArr && in_array(\App\Models\CardCategory::MANAGE_SECTION,$subMenuArr) ? 'checked' :'') }} name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::MANAGE_SECTION }}">
+                                        <label class="ms-2">Manage Section</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 mb-3 mt-4">
+                                <label class="form-label required">{{ __('messages.vcard.select_template') }}:</label>
+                            </div>
+                            <div class="form-group mb-7 vcard-template">
+                                <div class="row">
+                                    <input type="hidden" name="card_template_id" class="card-template-id"
+                                           value="{{ $card->template_id ?? '' }}">
+                                    <?php $templateIds = json_decode($card->template_id); ?>
+                                    @foreach ($templates as $id => $template)
+                                        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-3 templatecard"
+                                             data-id='{{ $template->id }}'>
+                                            <div
+                                                class="img-radio-multiple img-thumbnail {{  ($templateIds && in_array($template->id,$templateIds) ? 'img-border' : '') }}"
+                                                data-id="{{ $template->id }}" data-key='{{ $id }}'>
+                                                <img src="{{ asset($template->path)}}" alt="Template">
+                                                @if ($id == 22)
+                                                    <div class="ribbon-wrapper">
+                                                        <div
+                                                            class="ribbon fw-bold">{{ __('messages.feature.dynamic_vcard') }}</div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mt-5" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -50,5 +263,46 @@
             </div>
         </div>
     </div>
+    <script>
+        var templateIds = [];
 
+        function updateTemplateIds() {
+            var cardTemplateId = $(".card-template-id").attr('data-initial-value');
+            if (cardTemplateId && !templateIds.includes(cardTemplateId)) {
+                templateIds.push(cardTemplateId);
+            }
+            var templateIdString = JSON.stringify(templateIds);
+            $(".card-template-id").val(templateIdString);
+        }
+
+        $(".img-radio-multiple").click(function () {
+            var id = $(this).attr('data-id');
+            var key = $(this).attr('data-key');
+
+            if ($(this).hasClass("img-border")) {
+                $(this).removeClass("img-border");
+                var index = templateIds.indexOf(id);
+                if (index !== -1) {
+                    templateIds.splice(index, 1);
+                }
+            } else {
+                $(this).addClass("img-border");
+                $("#templateId").val(id);
+                if (!templateIds.includes(id)) {
+                    templateIds.push(id);
+                }
+            }
+
+            updateTemplateIds();
+        });
+
+
+        $(document).ready(function () {
+            var initialValue = $(".card-template-id").val();
+            if (initialValue) {
+                templateIds = JSON.parse(initialValue);
+            }
+            updateTemplateIds();
+        });
+    </script>
 @endsection

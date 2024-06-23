@@ -23,7 +23,8 @@
         <div class="card">
             <div class="card-body d-sm-flex position-relative px-2">
                 <div class="col-lg-12">
-                    <form method="post" action="{{ route('sadmin.vcards.add.category') }}" enctype="multipart/form-data">
+                    <form method="post" action="{{ route('sadmin.vcards.add.category') }}"
+                          enctype="multipart/form-data">
                         @csrf
                         {{--                        @method('PUT')--}}
                         <div class="mb-5 ps-5 pt-5">
@@ -56,48 +57,164 @@
                                 <label class="form-label required">Select Sub Menu:</label>
                                 <div class="d-flex row">
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BASICS }}">
+                                        <label class="ms-2">Basics</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::TEMPLATES }}">
+                                        <label class="ms-2">Templates</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::DYNAMIC_VCARD }}">
+                                        <label class="ms-2">Dynamic vcard</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::BUSINESS_HOURS }}">
                                         <label class="ms-2">Business Hours</label>
                                     </div>
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::QRCODE_CUSTOMIZE }}">
+                                        <label class="ms-2">Qrcode customize</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::SERVICES }}"
                                         >
                                         <label class="ms-2">Services</label>
                                     </div>
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::BANNER }}"
                                         >
                                         <label class="ms-2">Banner</label>
                                     </div>
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::PRODUCTS }}"
+                                        >
+                                        <label class="ms-2">Products</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::INSTAGRAM_EMBED }}"
+                                        >
+                                        <label class="ms-2">Instagram embed</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::TESTIMONIALS }}"
                                         >
                                         <label class="ms-2">Testimonials</label>
                                     </div>
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::IFRAMES }}"
+                                        >
+                                        <label class="ms-2">Iframes</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::APPOINTMENTS }}"
+                                        >
+                                        <label class="ms-2">Appointments</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::SOCIAL_LINKS }}"
                                         >
                                         <label class="ms-2">Social links - Website</label>
                                     </div>
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::ADVANCED }}"
+                                        >
+                                        <label class="ms-2">ADVANCED</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::FONTS }}"
                                         >
                                         <label class="ms-2">Fonts</label>
                                     </div>
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::GALLERIES }}"
+                                        >
+                                        <label class="ms-2">Galleries</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::SEO }}"
+                                        >
+                                        <label class="ms-2">Seo</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::BLOGS }}"
+                                        >
+                                        <label class="ms-2">Blogs</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::PRIVACY_POLICY }}"
                                         >
                                         <label class="ms-2"> Privacy Policy</label>
                                     </div>
                                     <div class="d-flex col-3 mt-3">
-                                        <input type="checkbox" name="sub_menu[]" class="form-check-input"
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
+                                               value="{{ \App\Models\CardCategory::TERM_CONDITION }}"
+                                        >
+                                        <label class="ms-2">Term condition</label>
+                                    </div>
+                                    <div class="d-flex col-3 mt-3">
+                                        <input type="checkbox"
+                                               name="sub_menu[]"
+                                               class="form-check-input"
                                                value="{{ \App\Models\CardCategory::MANAGE_SECTION }}">
                                         <label class="ms-2">Manage Section</label>
                                     </div>
