@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CardCategory;
 use App\Models\VcardSubscribers;
 use Carbon\Carbon;
 use Stripe\Stripe;
@@ -71,7 +72,7 @@ function getFormattedDateTime($date)
     }
 
     if ($formate == 5) {
-        return  date('m/d/Y', strtotime($date));
+        return date('m/d/Y', strtotime($date));
     }
 
     if ($formate == 6) {
@@ -166,8 +167,8 @@ function getFaviconUrl()
 }
 
 /**
- * @param  array  $input
- * @param  string  $key
+ * @param array $input
+ * @param string $key
  * @return string|null
  */
 function preparePhoneNumber($input, $key)
@@ -327,7 +328,7 @@ function getPayStackSupportedCurrencies()
 }
 
 /**
- * @param  null  $templates
+ * @param null $templates
  */
 function getTemplateUrls($templates = null): array
 {
@@ -1017,6 +1018,7 @@ function getCountryShortCode($countryName)
 
     return isset($country) ? strtolower($country['short_code']) : '';
 }
+
 /**
  * @return string[]
  */
@@ -1064,6 +1066,11 @@ function checkFrontLanguageSession()
 function getAllLanguage()
 {
     return Language::pluck('name', 'iso_code')->toArray();
+}
+
+function getCardCategory()
+{
+    return CardCategory::select('id', 'name', 'template_id')->get()->toArray();
 }
 
 function getAllLanguageWithFullData()
@@ -1188,13 +1195,13 @@ function getPaymentMethod($userSetting)
         $paymentMethod = Arr::except($paymentType, [Appointment::STRIPE, Appointment::PHONEPE, Appointment::MANUALLY]);
     } elseif ($phonepeEnable && $paypalEnable) {
         $paymentMethod = Arr::except($paymentType, [Appointment::STRIPE, Appointment::PAYSTACK, Appointment::MANUALLY]);
-    } elseif ($manuallyEnable  && $stripeEnable) {
+    } elseif ($manuallyEnable && $stripeEnable) {
         $paymentMethod = Arr::except($paymentType, [Appointment::PAYPAL, Appointment::PAYSTACK, Appointment::PHONEPE]);
-    } elseif ($manuallyEnable  && $paypalEnable) {
+    } elseif ($manuallyEnable && $paypalEnable) {
         $paymentMethod = Arr::except($paymentType, [Appointment::STRIPE, Appointment::PAYSTACK, Appointment::PHONEPE]);
-    } elseif ($manuallyEnable  && $paystackEnable) {
+    } elseif ($manuallyEnable && $paystackEnable) {
         $paymentMethod = Arr::except($paymentType, [Appointment::STRIPE, Appointment::PAYPAL, Appointment::PHONEPE]);
-    } elseif ($manuallyEnable  && $phonepeEnable) {
+    } elseif ($manuallyEnable && $phonepeEnable) {
         $paymentMethod = Arr::except($paymentType, [Appointment::STRIPE, Appointment::PAYPAL, Appointment::PAYSTACK]);
     }
 
@@ -1602,6 +1609,7 @@ function retriveH2Card($input)
 
     return $fineName;
 }
+
 function retriveH3Card($input)
 {
     $vcard = Vcard::whereId($input['vcard_id'])->first();
@@ -2404,6 +2412,7 @@ function storeImage($vcard)
 
     return $fineName;
 }
+
 function getHEXToRGB($color)
 {
     // explode(" ",$str)
@@ -2434,7 +2443,9 @@ function getCurrencyIcon($currencyCode)
 {
     return Currency::whereCurrencyCode($currencyCode)->first()->currency_icon;
 }
-function formatCurrency($price, $currencyIcon) {
+
+function formatCurrency($price, $currencyIcon)
+{
     if ($currencyIcon == '$') {
         return $currencyIcon . number_format($price);
     } else {
@@ -2461,15 +2472,16 @@ function sendVcardNotifications($vcardId)
 
 function totalStorage()
 {
-         $totalStorageData = totalStorageData();
-         $totalStorageData = collect($totalStorageData)->sum();
-        // Convert total storage to MB
-        $totalStorageInMB = $totalStorageData / (1024 * 1024);
+    $totalStorageData = totalStorageData();
+    $totalStorageData = collect($totalStorageData)->sum();
+    // Convert total storage to MB
+    $totalStorageInMB = $totalStorageData / (1024 * 1024);
 
     return $totalStorageInMB;
 }
 
-function totalStorageData() {
+function totalStorageData()
+{
     $totalStorage = [
         'product_storage' => 0,
         'blog_storage' => 0,
@@ -2481,75 +2493,75 @@ function totalStorageData() {
         'pwa_storage' => 0,
         'avatar_storage' => 0,
     ];
-        $vcard = Vcard::with(['services', 'gallery', 'testimonials', 'products', 'blogs', 'user'])
-            ->whereTenantId(getLogInTenantId())
-            ->get();
+    $vcard = Vcard::with(['services', 'gallery', 'testimonials', 'products', 'blogs', 'user'])
+        ->whereTenantId(getLogInTenantId())
+        ->get();
 
-        foreach ($vcard as $card) {
-            // Sum up product storage
-            foreach ($card->products as $product) {
-                $totalStorage['product_storage'] += Media::where('model_type', Product::class)
-                    ->where('model_id', $product->id)
-                    ->sum('size');
-            }
-
-            // Sum up blog storage
-            foreach ($card->blogs as $blog) {
-                $totalStorage['blog_storage'] += Media::where('model_type', VcardBlog::class)
-                    ->where('model_id', $blog->id)
-                    ->sum('size');
-            }
-
-            // Sum up services storage
-            foreach ($card->services as $service) {
-                $totalStorage['services_storage'] += Media::where('model_type', VcardService::class)
-                    ->where('model_id', $service->id)
-                    ->sum('size');
-            }
-
-            // Sum up testimonial storage
-            foreach ($card->testimonials as $testimonial) {
-                $totalStorage['testimonial_storage'] += Media::where('model_type', Testimonial::class)
-                    ->where('model_id', $testimonial->id)
-                    ->sum('size');
-            }
-
-            // Sum up social storage
-            $socialLinkAdd = SocialIcon::whereSocialLinkId($card->socialLink->id)->get();
-            foreach ($socialLinkAdd as $social) {
-                $socialId = $social->id;
-                $totalStorage['social_storage'] += Media::where('model_type', SocialIcon::class)
-                    ->where('model_id', $socialId)
-                    ->sum('size');
-            }
-
-            // Sum up gallery storage
-            foreach ($card->gallery as $gallery) {
-                $totalStorage['gallery_storage'] += Media::where('model_type', Gallery::class)
-                    ->where('model_id', $gallery->id)
-                    ->sum('size');
-            }
-
-            // Sum up profile storage
-            $totalStorage['profile_storage'] += Media::where('model_type', Vcard::class)
-                ->where('model_id', $card->id)
+    foreach ($vcard as $card) {
+        // Sum up product storage
+        foreach ($card->products as $product) {
+            $totalStorage['product_storage'] += Media::where('model_type', Product::class)
+                ->where('model_id', $product->id)
                 ->sum('size');
         }
 
-        // Sum up Pwa storage
-        $userPwa = UserSetting::where('user_id', getLogInUserId())
-            ->where('key', 'pwa_icon')
-            ->first();
-        if ($userPwa) {
-            $totalStorage['pwa_storage'] += Media::where('model_type', UserSetting::class)
-                ->where('model_id', $userPwa->id)
+        // Sum up blog storage
+        foreach ($card->blogs as $blog) {
+            $totalStorage['blog_storage'] += Media::where('model_type', VcardBlog::class)
+                ->where('model_id', $blog->id)
                 ->sum('size');
         }
 
-        // Sum up avatar storage
-        $totalStorage['avatar_storage'] += Media::where('model_type', User::class)
-            ->where('model_id', getLogInUserId())
+        // Sum up services storage
+        foreach ($card->services as $service) {
+            $totalStorage['services_storage'] += Media::where('model_type', VcardService::class)
+                ->where('model_id', $service->id)
+                ->sum('size');
+        }
+
+        // Sum up testimonial storage
+        foreach ($card->testimonials as $testimonial) {
+            $totalStorage['testimonial_storage'] += Media::where('model_type', Testimonial::class)
+                ->where('model_id', $testimonial->id)
+                ->sum('size');
+        }
+
+        // Sum up social storage
+        $socialLinkAdd = SocialIcon::whereSocialLinkId($card->socialLink->id)->get();
+        foreach ($socialLinkAdd as $social) {
+            $socialId = $social->id;
+            $totalStorage['social_storage'] += Media::where('model_type', SocialIcon::class)
+                ->where('model_id', $socialId)
+                ->sum('size');
+        }
+
+        // Sum up gallery storage
+        foreach ($card->gallery as $gallery) {
+            $totalStorage['gallery_storage'] += Media::where('model_type', Gallery::class)
+                ->where('model_id', $gallery->id)
+                ->sum('size');
+        }
+
+        // Sum up profile storage
+        $totalStorage['profile_storage'] += Media::where('model_type', Vcard::class)
+            ->where('model_id', $card->id)
             ->sum('size');
+    }
+
+    // Sum up Pwa storage
+    $userPwa = UserSetting::where('user_id', getLogInUserId())
+        ->where('key', 'pwa_icon')
+        ->first();
+    if ($userPwa) {
+        $totalStorage['pwa_storage'] += Media::where('model_type', UserSetting::class)
+            ->where('model_id', $userPwa->id)
+            ->sum('size');
+    }
+
+    // Sum up avatar storage
+    $totalStorage['avatar_storage'] += Media::where('model_type', User::class)
+        ->where('model_id', getLogInUserId())
+        ->sum('size');
 
     return $totalStorage;
 }

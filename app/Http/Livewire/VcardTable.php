@@ -16,10 +16,11 @@ class VcardTable extends LivewireTableComponent
 
     protected $verified;
     protected $status;
+    protected $category;
 
     public bool $showButtonOnHeader = true;
 
-    protected $listeners = ['verifiedFilter', 'statusFilter'];
+    protected $listeners = ['verifiedFilter', 'statusFilter','categoryFilter'];
 
 
     public string $buttonComponent = 'sadmin.vcards.columns.add-button';
@@ -50,6 +51,9 @@ class VcardTable extends LivewireTableComponent
             Column::make(__('messages.vcard.preview_url'), 'url_alias')
                 ->hideIf('url_alias')
                 ->searchable(),
+            Column::make(__('card_type'), 'card_category')
+                ->sortable()->searchable()
+                ->view('vcards.columns.type'),
             Column::make(__('messages.vcard.preview_url'), 'url_alias')->sortable()->view('sadmin.vcards.columns.preview'),
             Column::make(__('messages.vcard.verified'), 'is_verified')->view('sadmin.vcards.columns.verified'),
             Column::make(__('messages.vcard.stats'), 'id')
@@ -68,6 +72,12 @@ class VcardTable extends LivewireTableComponent
         $this->setBuilder($this->builder());
     }
 
+    public function categoryFilter($category)
+    {
+        $this->verified = $category;
+        $this->setBuilder($this->builder());
+    }
+
     public function statusFilter($status)
     {
         $this->status = $status;
@@ -78,6 +88,7 @@ class VcardTable extends LivewireTableComponent
     {
         $verified = $this->verified;
         $status = $this->status;
+        $category = $this->category;
         $query =  Vcard::query();
 
         $query->when($verified != "", function ($q) use ($verified) {
@@ -96,6 +107,10 @@ class VcardTable extends LivewireTableComponent
             if ($status == Vcard::INACTIVE) {
                 $q->where('status', Vcard::INACTIVE);
             }
+        });
+
+        $query->when($category != "", function ($q) use ($category) {
+           $q->where('card_category',$category);
         });
 
         return $query->select('vcards.*');

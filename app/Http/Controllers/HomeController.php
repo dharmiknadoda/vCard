@@ -43,7 +43,7 @@ class HomeController extends AppBaseController
 
         $features = Feature::all();
 
-        $plans = Plan::with(['currency', 'planFeature', 'hasZeroPlan'])->whereIsDefault(Plan::IS_DEACTIVE)->whereStatus(Plan::IS_ACTIVE)->get();
+        $plans = Plan::with(['currency', 'planFeature', 'hasZeroPlan'])/*->whereIsDefault(Plan::IS_DEACTIVE)*/->whereStatus(Plan::IS_ACTIVE)->get();
 
         $homePage = getSuperAdminSettingValue('home_page_theme') == 1 ? 'home' : 'home1';
         $view = getSuperAdminSettingValue('is_front_page') ? view("front.home.$homePage", compact('plans', 'setting', 'features', 'testimonials', 'aboutUS', 'metas', 'faqs')) : redirect(route('login'));

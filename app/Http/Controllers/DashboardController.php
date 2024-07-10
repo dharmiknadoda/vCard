@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\Analytics;
+use App\Models\Analytic;
 use App\Models\ScheduleAppointment;
 use App\Models\User;
 use App\Models\Vcard;
@@ -12,6 +14,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends AppBaseController
 {
@@ -38,6 +41,11 @@ class DashboardController extends AppBaseController
 
         $enquiry = $this->dashboardRepository->getEnquiryCountAttribute();
         $appointment = $this->dashboardRepository->getAppointmentCountAttribute();
+        $user = Auth::user();
+        $cardId = Vcard::where('tenant_id',$user->tenant_id)->pluck('id')->first();
+
+        $cardIds = Vcard::where('tenant_id',$user->tenant_id)->where('status',1)->pluck('id')->toArray();
+        $viewCount = Analytic::whereIn('vcard_id',$cardIds)->count();
 
         if (\Request::is('sadmin/dashboard')) {
             $activeVcard = Vcard::whereStatus(1)->count();
@@ -49,7 +57,7 @@ class DashboardController extends AppBaseController
         $activeVcard = Vcard::whereTenantId(auth()->user()->tenant_id)->whereStatus(1)->count();
         $deActiveVcard = Vcard::whereTenantId(auth()->user()->tenant_id)->whereStatus(0)->count();
 
-        return view('dashboard.index', compact('enquiry', 'appointment', 'activeVcard', 'deActiveVcard'));
+        return view('dashboard.index', compact('enquiry', 'appointment', 'activeVcard', 'deActiveVcard','cardId','viewCount'));
     }
 
     public function getUsersList(Request $request): JsonResponse

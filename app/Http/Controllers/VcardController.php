@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateVcardRequest;
 use App\Models\Appointment;
 use App\Models\AppointmentDetail;
 use App\Models\Banner;
+use App\Models\CardCategory;
 use App\Models\Currency;
 use App\Models\DynamicVcard;
 use App\Models\PrivacyPolicy;
@@ -27,6 +28,7 @@ use App\Repositories\VcardRepository;
 use App\Http\Requests\CreateEmailSubscribersRequest;
 use Carbon\Carbon;
 use Exception;
+use http\Env\Response;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -42,6 +44,7 @@ use Spatie\Color\Hex;
 use Str;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use URL;
+use function Termwind\render;
 
 class VcardController extends AppBaseController
 {
@@ -134,6 +137,8 @@ class VcardController extends AppBaseController
                 $query->where('end_time', '!=', '00:00');
             }, 'services', 'testimonials', 'products', 'blogs', 'privacy_policy', 'term_condition', 'user','banners','iframes','dynamic_vcard',
         ])->whereUrlAlias($alias)->first();
+
+//        dd($vcard);
 
         $vcardProducts = $vcard->products->sortDesc()->take(6);
 
@@ -258,9 +263,11 @@ class VcardController extends AppBaseController
                     'vcardProducts',
                     'dynamicVcard',
                     'instagramEmbed',
-                    'iframes',
+                    'iframes'
                 )
             );
+        }else{
+            return view('vcardTemplates.vCard-error');
         }
         abort('404');
     }
@@ -316,9 +323,9 @@ class VcardController extends AppBaseController
 
     public function update(UpdateVcardRequest $request, Vcard $vcard): RedirectResponse
     {
+
         $request->except('url_alias');
         $input = $request->all();
-
         $edit_alias_url = getSuperAdminSettingValue('url_alias');
         if ($edit_alias_url == 0 && isset($input['url_alias']) && $input['url_alias'] != $vcard->url_alias) {
             Flash::error(__('messages.flash.url_alias'));
@@ -667,5 +674,89 @@ class VcardController extends AppBaseController
     {
         $vcardId = $vcard->id;
         return view('vcards.vcard-subscribers', compact('vcardId'));
+    }
+
+    public function addCard(){
+        return view('vcards.add-card.index');
+    }
+
+    public function createCardCategory(){
+        return view('vcards.add-card.create');
+    }
+
+    public function addCardCategory(Request $request){
+        $data = $request->all();
+//        dd($data);
+        $filename = '';
+        if($request->hasFile('default_image')) {
+            $files = $request->file('default_image');
+            $filename = time().'.'.$files->getClientOriginalExtension();
+            $destinationPath ='assets/images';
+            $files->move($destinationPath,$filename);
+        }
+        $data['sub_menu'] = json_encode($data['sub_menu']);
+        CardCategory::create([
+            "name"=>$data['name'],
+            "template_id"=>$data['card_template_id'],
+            "name_field"=>$data['title'],
+            "sub_menu" => $data['sub_menu'],
+            "default_image" => $filename,
+        ]);
+        return redirect()->route('sadmin.vcards.add.card');
+    }
+
+    public function categoryEdit($id){
+        $card =  CardCategory::where('id',$id)->first();
+        return view('vcards.add-card.edit',compact('card'));
+    }
+
+    public function categoryUpdate(Request $request , $id){
+        $data = $request->all();
+//        dd($data);
+        $filename = '';
+        if($request->hasFile('default_image')) {
+            $files = $request->file('default_image');
+            $filename = time().'.'.$files->getClientOriginalExtension();
+            $destinationPath ='assets/images';
+            $files->move($destinationPath,$filename);
+            CardCategory::where('id',$id)->update([
+                "default_image" => $filename,
+            ]);
+        }
+        $data['sub_menu'] = json_encode($data['sub_menu']);
+
+        CardCategory::where('id',$id)->update([
+            "name"=>$data['name'],
+            "template_id" => $data['card_template_id'],
+            "name_field"=>$data['title'],
+            "sub_menu" => $data['sub_menu'],
+        ]);
+        return redirect()->route('sadmin.vcards.add.card');
+    }
+
+    public function cardCategoryDestroy($id){
+        $delete  = CardCategory::find($id)->delete();
+        if($delete){
+            return response()->json(['success'],200);
+        }
+    }
+
+    public function autoSaveCategory(Request $request){
+        $updateCetegory = Vcard::where('id',$request->cardId)->update([
+            "card_category"=>$request->cardCategoryId,
+        ]);
+        $data = $request->all();
+        $cardCategories = CardCategory::where('id',$data['cardCategoryId'])->first();
+        if($updateCetegory){
+            return response()->json(['success'=>'success','data' =>$cardCategories],200);
+        }
+    }
+
+    public function getSubMenu(Request $request){
+        $data = $request->all();
+        $cardCategories = CardCategory::where('id',$data['cardCategoryId'])->first();
+        $vcard = Vcard::where('id',$data['cardId'])->first();
+        $html = view('vcards.sub_menu_render',compact('cardCategories','vcard','data'))->render();
+        return response()->json(['html'=>$html]);
     }
 }

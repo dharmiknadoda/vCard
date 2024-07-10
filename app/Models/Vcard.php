@@ -149,6 +149,7 @@ class Vcard extends Model implements HasMedia
      */
     protected $fillable = [
         'url_alias',
+        'card_category',
         'name',
         'occupation',
         'description',
@@ -324,6 +325,10 @@ class Vcard extends Model implements HasMedia
     public function getFullNameAttribute(): string
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    public function getCardCategory(){
+        return $this->belongsTo(CardCategory::class, 'card_category');
     }
 
     public function getProfileUrlAttribute(): string

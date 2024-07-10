@@ -47,7 +47,6 @@ class VcardRepository extends BaseRepository
     {
         return $this->fieldSearchable;
     }
-
     /**
      * {@inheritDoc}
      */
@@ -94,7 +93,6 @@ class VcardRepository extends BaseRepository
             throw $e;
         }
     }
-
     public function edit($vcard): array
     {
         $data['vcard'] = $vcard;

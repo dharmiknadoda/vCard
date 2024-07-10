@@ -2,25 +2,24 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\CardCategory;
 use App\Models\Vcard;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Livewire\LivewireTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class UserVcardTable extends LivewireTableComponent
+class CardCategoryTable extends LivewireTableComponent
 {
     protected $model = Vcard::class;
 
-    public bool $showButtonOnHeader = true;
+    protected $listeners = ['refresh' => '$refresh', 'resetPageTable', 'deleteVcard','cardFilter','resetPageTable'];
 
-    protected $listeners = ['refresh' => '$refresh', 'resetPageTable', 'deleteVcard'];
-
-    public string $buttonComponent = 'vcards.add-button';
+    protected $category;
 
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        $this->setPageName('user-vcard-table');
+        $this->setPageName('card-category-table');
         $this->setDefaultSort('created_at', 'desc');
         $this->setColumnSelectStatus(false);
         $this->setQueryStringStatus(false);
@@ -36,36 +35,37 @@ class UserVcardTable extends LivewireTableComponent
         });
     }
 
+    public function cardFilter($category)
+    {
+        $this->category = $category;
+        $this->setBuilder($this->builder());
+    }
+
     public function columns(): array
     {
         return [
-            Column::make(__('messages.common.action'), 'updated_at')
-                ->view('vcards.columns.action'),
             Column::make(__('messages.vcard.vcard_name'), 'name')
                 ->sortable()->searchable()
-                ->view('vcards.columns.name'),
-            Column::make(__('card_type'), 'card_category')
-                ->sortable()->searchable()
-                ->view('vcards.columns.type'),
-            Column::make(__('messages.vcard.preview_url'), 'id')->view('vcards.columns.preview'),
-            Column::make(__('messages.vcard.preview_url'), 'url_alias')
-                ->hideIf('url_alias')
-                ->searchable(),
-            Column::make(__('messages.vcard.stats'), 'created_at')->view('vcards.columns.stats'),
-            Column::make(__('messages.vcard.subsribers'), 'created_at')->view('vcards.columns.subscribers'),
-            Column::make(__('messages.vcard.status'), 'id')
-                ->sortable()
-                ->view('vcards.columns.status'),
+                ->view('vcards.add-card.columns.name'),
             Column::make(__('messages.vcard.created_at'), 'created_at')->sortable()->view('vcards.columns.created_at'),
+            Column::make(__('messages.common.action'), 'updated_at')
+                ->view('vcards.add-card.columns.action'),
         ];
+    }
+
+    public function statusFilter($status)
+    {
+        $this->status = $status;
+        $this->setBuilder($this->builder());
     }
 
     public function builder(): Builder
     {
-        return Vcard::with(['tenant.user', 'template'])->where('tenant_id', getLogInTenantId())->select('vcards.*');
+
+        return CardCategory::select('card_categories.*');
     }
 
-    public function resetPageTable($pageName = 'user-vcard-table')
+    public function resetPageTable($pageName = 'card-category-table')
     {
         $rowsPropertyData = $this->getRows()->toArray();
         $prevPageNum = $rowsPropertyData['current_page'] - 1;
@@ -94,6 +94,7 @@ class UserVcardTable extends LivewireTableComponent
             $this->dispatchBrowserEvent('delete-vcard-success');
             $this->clearSelected();
     }
+
 
     public function updatedSelected():void
     {

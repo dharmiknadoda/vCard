@@ -26,7 +26,7 @@ class UpdateSettingRequest extends FormRequest
         $rules['email'] = 'required|email:filter';
         $rules['favicon'] = 'nullable|mimes:jpg,jpeg,png';
         $rules['address'] = 'required';
-        $rules['dashboard_logo'] = 'nullable|mimes:jpg,jpeg,png|dimensions:max_width=60,max_height=60';
+        $rules['dashboard_logo'] = 'nullable|mimes:jpg,jpeg,png';//|dimensions:max_width=60,max_height=60
         $rules['home_page_banner'] = 'nullable|mimes:jpg,jpeg,png';
         $rules['affiliation_amount'] = 'numeric|min:1';
 

@@ -62,21 +62,29 @@ class SettingController extends AppBaseController
 
     public function update(UpdateSettingRequest $request): RedirectResponse
     {
-
         if ($request->favicon) {
             $imageSize = getimagesize($request->favicon);
             $width = $imageSize[0];
             $height = $imageSize[1];
 
-            if ($width > 16 && $height > 16) {
-                Flash::error(__('messages.placeholder.favicon_invalid'));
-
-                return redirect()->back();
-            }
+//            if ($width > 16 && $height > 16) {
+//                Flash::error(__('messages.placeholder.favicon_invalid'));
+//
+//                return redirect()->back();
+//            }
         }
 
         $id = Auth::id();
         $this->settingRepository->update($request->all(), $id);
+        if(isset($request->twoFa_auth) && $request->twoFa_auth == 1){
+            Setting::where('key','2fa_auth')->update([
+                "value" => 1
+            ]);
+        }else{
+            Setting::where('key','2fa_auth')->update([
+                "value" => 0
+            ]);
+        }
 
         Flash::success(__('messages.flash.setting_update'));
 

@@ -109,6 +109,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'email_verified_at',
         'password',
         'theme_mode',
+        'google_id',
         'language',
         'tenant_id',
     ];
