@@ -23,7 +23,7 @@
         <div class="card">
             <div class="card-body d-sm-flex position-relative px-2">
                 <div class="col-lg-12">
-                    <form method="post" action="{{ route('sadmin.nfc.category.store') }}"
+                    <form method="post" action="{{ route('sadmin.nfc.category.update') }}"
                           enctype="multipart/form-data">
                         @csrf
                         {{--                        @method('PUT')--}}
@@ -32,9 +32,22 @@
                             <span data-bs-toggle="tooltip" data-placement="top"
                                   data-bs-original-title="Maximum 34 character allowed">
                                 <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
-                        </span>
+                            </span>
+
+                            
+                            <input type="hidden" name="id" value="{{ $data->id }}">
                             <input class="form-control" placeholder="Category name" required="" maxlength="30"
-                                   name="name" type="text">
+                            name="name" type="text" value="{{ $data->name }}">
+                            
+                            <div class="input-group mt-3 mb-3">
+                                <input type="file" name="card_frount_side" class="form-control" id="inputGroupFile01">
+                                <label class="input-group-text" for="inputGroupFile01">Card Frount Side</label>
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <input type="file" name="card_back_side" class="form-control" id="inputGroupFile01">
+                                <label class="input-group-text" for="inputGroupFile01">Card Back Side</label>
+                            </div>
                             <button class="btn btn-primary mt-4" type="submit">Submit</button>
                         </div>
                     </form>

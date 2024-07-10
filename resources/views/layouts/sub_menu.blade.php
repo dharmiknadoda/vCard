@@ -36,6 +36,7 @@
         <a class="nav-link p-0 {{ Request::is('sadmin/vcards*') ? 'active' : '' }}"
             href="{{ route('sadmin.vcards.index') }}">{{ __('messages.vcards') }}</a>
     </li>
+    
 
     <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('sadmin/templates*') ? 'd-none' : '' }}">
         <a class="nav-link p-0 {{ Request::is('sadmin/templates*') ? 'active' : '' }}"

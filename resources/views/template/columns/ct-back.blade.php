@@ -1,0 +1,1 @@
+<img src="{{asset('assets/images/'.$row->ct_back)}}" class="w-25 h-25" alt="">

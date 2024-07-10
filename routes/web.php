@@ -378,10 +378,28 @@ Route::middleware('auth', 'valid.user')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('sadmin.dashboard');
 
         // NFC Routes
+        Route::get('/nfc-card-category', [NfcController::class, 'nfcCardCategory'])->name('sadmin.nfc.card.category');
+        Route::get('/nfc-category-create', [NfcController::class, 'nfcCategoryCreate'])->name('sadmin.nfc.category.create');
+        Route::post('/nfc-category-store', [NfcController::class, 'nfcCategoryStore'])->name('sadmin.nfc.category.store');
+        Route::get('/nfc-category-edit/{id}', [NfcController::class, 'nfcCategoryEdit'])->name('sadmin.nfc.category.edit');
+        Route::post('/nfc-category-update', [NfcController::class, 'nfcCategoryUpdate'])->name('sadmin.nfc.category.update');
+        Route::delete('/nfc-category-destroy/{id}', [NfcController::class, 'cardCategoryDestroy'])->name('sadmin.nfc.category.destroy');
+
+        // add card template 
+        Route::get('/template', [NfcController::class, 'addTemplate'])->name('template.add.template');
+        Route::get('/template-create', [NfcController::class, 'templateCreate'])->name('template.create');
+        Route::post('/template-store', [NfcController::class, 'templateStore'])->name('template.store');
+        Route::get('/template-edit/{id}', [NfcController::class, 'templateEdit'])->name('template.edit');
+        Route::post('/template-update', [NfcController::class, 'templateUpdate'])->name('template.update');
+        Route::delete('/template-destroy/{id}', [NfcController::class, 'templateDestroy'])->name('template.destroy');
+        
+        
+        
         Route::get('/nfc-card-types', [NfcController::class, 'index'])->name('sadmin.nfc.card.types');
         Route::resource('nfc-card-orders', NfcCardOrderController::class)->only('index', 'show');
         Route::post('/nfc/store', [NfcController::class, 'store'])->name('nfc.store');
         Route::delete('/nfc/delete/{id}', [NfcController::class, 'destroy'])->name('nfc.delete');
+
         Route::get('/nfc/{id}', [NfcController::class, 'edit'])->name('nfc.edit');
         Route::post('/nfc/update/{id}', [NfcController::class, 'update'])->name('nfc.update');
 
@@ -553,6 +571,9 @@ Route::middleware('auth', 'valid.user')->group(function () {
         Route::delete('/cardscategory-destroy/{id}', [VcardController::class, 'cardCategoryDestroy'])->name('card.category.destroy');
         Route::get('/create-card-category', [VcardController::class, 'createCardCategory'])->name('create.card.category');
     });
+    
+    
+
 
     //Show Withdrawal data
     Route::get(

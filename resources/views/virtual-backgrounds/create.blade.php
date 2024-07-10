@@ -10,14 +10,14 @@
         <div class="d-flex justify-content-between align-items-end mb-5">
             <h1>{{ __('messages.common.add_virtual_background') }}</h1>
             <a class="btn btn-outline-primary float-end"
-                href="{{ route('virtual-backgrounds.index') }}">{{ __('messages.common.back') }}</a>
+               href="{{ route('virtual-backgrounds.index') }}">{{ __('messages.common.back') }}</a>
         </div>
         <div class="card">
             <form data-turbo="false" action="{{ route('download.ecard') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6 mt-4">
+                        <div class="mt-4">
                             <label class="form-label required">{{ __('messages.vcard.vcard_name') }}</label>
                             <select id="e-vcard-id" name="vcard_id" required>
                                 <option value="">{{ __('messages.vcard.selec') }}</option>
@@ -25,76 +25,109 @@
                                     <option value="{{ $id }}" @selected(old('vcard_id'))>{{ $vcard }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <div class="mb-3" io-image-input="true">
-                                <label for="exampleInputImage"
-                                    class="form-label required">{{ __('messages.e_card.add_ecard') . ':' }}</label>
-                                <span data-bs-toggle="tooltip" data-placement="top"
-                                    data-bs-original-title="{{ __('messages.e_card.ecard_info')}}">
+                            <div class="mt-4">
+                                <div class="mb-3" io-image-input="true">
+                                    <label for="exampleInputImage"
+                                           class="form-label required">{{ __('messages.e_card.add_ecard') . ':' }}</label>
+                                    <span data-bs-toggle="tooltip" data-placement="top"
+                                          data-bs-original-title="{{ __('messages.e_card.ecard_info')}}">
                                     <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
                                 </span>
-                                <div class="d-block">
-                                    <div class="image-picker">
-                                        <div class="image previewImage" id="exampleInputImage"
-                                            style="background-image: url('{{ asset('web/media/logos/infyom.png') }}')">
-                                        </div>
-                                        <span class="picker-edit rounded-circle text-gray-500 fs-small"
-                                            data-bs-toggle="tooltip" data-placement="top"
-                                            data-bs-original-title="{{ __('messages.tooltip.profile') }}">
+                                    <div class="d-block">
+                                        <div class="image-picker">
+                                            <div class="image previewImage" id="exampleInputImage"
+                                                 style="background-image: url('{{ asset('web/media/logos/infyom.png') }}')">
+                                            </div>
+                                            <span class="picker-edit rounded-circle text-gray-500 fs-small"
+                                                  data-bs-toggle="tooltip" data-placement="top"
+                                                  data-bs-original-title="{{ __('messages.tooltip.profile') }}">
                                             <label>
                                                 <i class="fa-solid fa-pen" id="profileImageIcon"></i>
                                                 <input type="file" id="e-card-logo" name="ecard-logo"
-                                                    class="image-upload file-validation d-none" accept="image/*" />
+                                                       class="image-upload file-validation d-none" accept="image/*"/>
                                             </label>
                                         </span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="form-text text-danger" id="logoImageValidationErrors"></div>
                             </div>
-                            <div class="form-text text-danger" id="logoImageValidationErrors"></div>
                         </div>
                     </div>
-                    <input type="hidden" name="e-card-id" value="{{ $ecard }}">
+                    {{-- <input type="hidden" name="e-card-id" value="{{ $ecardInstance }}"> --}}
                     <div class="row">
                         <div class="col-md-6 mt-4">
                             <label class="form-label required">{{ __('messages.form.first_name') }}</label>
-                            <input type="text" class="form-control" name="first_name" id="e-card-first-name" required value="{{ old('first_name') }}"
-                                placeholder="{{ __('messages.form.f_name') }}" maxlength="10">
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label required">{{ __('messages.form.last_name') }}</label>
-                            <input type="text" class="form-control" name="last_name" id="e-card-last-name" required value="{{ old('last_name') }}"
-                                placeholder="{{ __('messages.form.l_name') }}" maxlength="10">
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label required">{{ __('messages.user.email') }}</label>
-                            <input type="email" class="form-control" name="email" id="e-card-email" required
-                                placeholder="{{ __('messages.form.enter_email') }}" value="{{ old('email') }}">
-                        </div>
-                        {{-- {{ \LaravelQRCode\Facades\QRCode::url(request()->url())->png() }} --}}
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label required">{{ __('messages.form.occupation') }}</label>
-                            <input type="text" class="form-control" name="occupation" id="e-card-occupation" required value="{{ old('occupation') }}"
-                                placeholder="{{ __('messages.form.occupation') }}" maxlength="20">
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label required">{{ __('messages.user.location') }}</label>
-                            <input type="text" class="form-control" name="location" id="e-card-location" required value="{{ old('location') }}"
-                                placeholder="{{ __('messages.form.location') }}">
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <div class="form-group">
-                                {{ Form::label('phone', __('messages.user.phone') . ':', ['class' => 'form-label required']) }}
-                                {{ Form::text('phone', null, ['class' => 'form-control', 'required', 'placeholder' => __('messages.form.phone'), 'id' => 'phoneNumber', 'onkeyup' => 'if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,"")']) }}
-                                {{ Form::hidden('region_code', null, ['id' => 'prefix_code']) }}
+                            <input type="text" class="form-control" name="first_name" id="e-card-first-name" required
+                                   value="{{ old('first_name') }}"
+                                   placeholder="{{ __('messages.form.f_name') }}" maxlength="10">
+                            <div class="mt-4">
+                                <label class="form-label required">{{ __('messages.form.last_name') }}</label>
+                                <input type="text" class="form-control" name="last_name" id="e-card-last-name" required
+                                       value="{{ old('last_name') }}"
+                                       placeholder="{{ __('messages.form.l_name') }}" maxlength="10">
+                            </div>
+                            <div class="mt-4">
+                                <label class="form-label required">{{ __('messages.user.email') }}</label>
+                                <input type="email" class="form-control" name="email" id="e-card-email" required
+                                       placeholder="{{ __('messages.form.enter_email') }}" value="{{ old('email') }}">
+                            </div>
+                            {{-- {{ \LaravelQRCode\Facades\QRCode::url(request()->url())->png() }} --}}
+                            <div class="mt-4">
+                                <label class="form-label required">{{ __('messages.form.occupation') }}</label>
+                                <input type="text" class="form-control" name="occupation" id="e-card-occupation"
+                                       required value="{{ old('occupation') }}"
+                                       placeholder="{{ __('messages.form.occupation') }}" maxlength="20">
+                            </div>
+                            <div class="mt-4">
+                                <label class="form-label required">{{ __('messages.user.location') }}</label>
+                                <input type="text" class="form-control" name="location" id="e-card-location" required
+                                       value="{{ old('location') }}"
+                                       placeholder="{{ __('messages.form.location') }}">
+                            </div>
+                            <div class="mt-4">
+                                <div class="form-group">
+                                    {{ Form::label('phone', __('messages.user.phone') . ':', ['class' => 'form-label required']) }}
+                                    {{ Form::text('phone', null, ['class' => 'form-control', 'required', 'placeholder' => __('messages.form.phone'), 'id' => 'phoneNumber', 'onkeyup' => 'if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,"")']) }}
+                                    {{ Form::hidden('region_code', null, ['id' => 'prefix_code']) }}
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="form-label required">{{ __('messages.social.website') }}</label>
+                                <input type="text" class="form-control" name="website" id="e-card-website" required
+                                       value="{{ old('website') }}"
+                                       placeholder="{{ __('messages.form.website') }}">
                             </div>
                         </div>
-
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label required">{{ __('messages.social.website') }}</label>
-                            <input type="text" class="form-control" name="website" id="e-card-website" required value="{{ old('website') }}"
-                                placeholder="{{ __('messages.form.website') }}">
+                        <div class="col-md-6 mt-5">
+                            <div class="preview rounded-3 border h-50" style="background-image: url('{{asset('assets/images/'.$ecardInstance->cp_front)}}');  background-repeat: no-repeat; background-size: cover;">
+                                <div class="row h-100 justify-content-center">
+                                    <div class="col-md-5 d-flex flex-column justify-content-center align-items-center p-2">
+                                        <img src="{{ asset('images/logo.png') }}" id="imageLogo" style="max-width: 40%; max-height: 40%" class="img-fluid w-50"
+                                        alt="logo">
+                                        <h1 class="mt-4 text-white">Tap Card</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="preview rounded-3 border h-50 mt-3" style=" background-image: url('{{asset('assets/images/'.$ecardInstance->cp_back)}}'); background-repeat: no-repeat; background-size: cover; background-position: 3px -27px;">
+                                <div class="row h-100 justify-content-center">
+                                    <div
+                                        class="col-md-5 d-flex justify-content-center align-items-center p-3">
+                                        <div class="d-flex flex-column justify-content-center align-items-center">
+                                            <h1><span class="p-first-name text-white">First</span> <span class="p-last-name text-white">Last</span></h1>
+                                            <span class="p-occupation text-white">Occupation</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 d-flex justify-content-center align-items-center p-2">
+                                        <img src="{{ asset('assets/img/vcard23/qr-code.png') }}" class="img-fluid w-50"
+                                             alt="Qr">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        {{-- @endif --}}
+                        {{-- @endforeach --}}
                     </div>
 
                     <div class="col-lg-12 d-flex mt-5">
@@ -102,10 +135,33 @@
                             {{ __('messages.common.save') }}
                         </button>
                         <a href="{{ route('virtual-backgrounds.index') }}"
-                            class="btn btn-secondary">{{ __('messages.common.discard') }}</a>
+                           class="btn btn-secondary">{{ __('messages.common.discard') }}</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <script>
+        document.getElementById('e-card-logo').addEventListener('change', function(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imageLogo');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+
+        $('#e-card-first-name').keyup(function (){
+            var firstName = $(this).val();
+            $(".p-first-name").text(firstName)
+        });
+        $('#e-card-last-name').keyup(function (){
+            var lastName = $(this).val();
+            $(".p-last-name").text(lastName)
+        })
+        $('#e-card-occupation').keyup(function (){
+            var occupation = $(this).val();
+            $(".p-occupation").text(occupation)
+        })
+    </script>
 @endsection

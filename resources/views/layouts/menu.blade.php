@@ -34,7 +34,22 @@
         </a>
     </li>
 
-    <li class="nav-item {{ Request::is('sadmin/nfc*') ? 'active' : '' }}">
+    <li class="nav-item {{ \Request::route()->getName() == 'sadmin.nfc.card.category' ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('sadmin.nfc.card.category') }}">
+            <span class="aside-menu-icon pe-3"><i class="fa-solid fa-credit-card"></i></span>
+            <span class="aside-menu-title">{{ __('messages.nfc.nfc_card_category') }}</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ \Request::route()->getName() == 'template.add.template' ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('template.add.template') }}">
+            <span class="aside-menu-icon pe-3"><i class="fa-solid fa-credit-card"></i></span>
+            <span class="aside-menu-title">{{ __('messages.nfc.add_templates') }}</span>
+        </a>
+    </li>
+
+
+    <li class="nav-item {{ \Request::route()->getName() == 'sadmin.nfc.card.types' ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('sadmin.nfc.card.types') }}">
             <span class="aside-menu-icon pe-3"><i class="fa-solid fa-credit-card"></i></span>
             <span class="aside-menu-title">{{ __('messages.nfc.sell_nfc_cards') }}</span>

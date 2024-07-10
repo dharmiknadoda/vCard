@@ -41,7 +41,7 @@
                             <span data-bs-toggle="tooltip" data-placement="top"
                                   data-bs-original-title="Maximum 34 character allowed">
                                 <i class="fas fa-question-circle ml-1 mt-1 general-question-mark"></i>
-                        </span>
+                            </span>
                             <input class="form-control" placeholder="Enter title name" required="" maxlength="20"
                                    name="title" type="text">
 

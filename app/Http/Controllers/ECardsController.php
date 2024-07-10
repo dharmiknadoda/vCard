@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateEcardRequest;
+use App\Models\NfcCardCategory;
+use App\Models\NfcTemplate;
 use App\Models\Vcard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -21,8 +23,17 @@ class ECardsController extends Controller
         $tenantId = Auth::user()->tenant_id;
         $vCards = Vcard::whereTenantId($tenantId)->pluck('name', 'id');
 
-        return view('virtual-backgrounds.index', compact('vCards'));
+        // Fetch and group the NFC templates by category ID
+        $data = NfcTemplate::all()->groupBy('category_id');
+
+        // Fetch the categories that have corresponding NFC templates
+        $categories = NfcCardCategory::whereIn('id', $data->keys())->pluck('name', 'id');
+
+        return view('virtual-backgrounds.index', compact('vCards', 'data', 'categories'));
     }
+
+
+
 
     public function getVcardData(Request $request): JsonResponse
     {
@@ -50,7 +61,7 @@ class ECardsController extends Controller
 
         $path = asset('uploads/ecard');
 
-        if (! Storage::exists($path)) {
+        if (!Storage::exists($path)) {
             Storage::disk('public')->makeDirectory('uploads/ecard');
         }
 
@@ -101,12 +112,12 @@ class ECardsController extends Controller
 
         // delete images after generate zip file
         $vcardId = $input['vcard_id'];
-        $qrCodeImage = public_path('ecard/'.$vcardId.'-qr.png');
+        $qrCodeImage = public_path('ecard/' . $vcardId . '-qr.png');
         $frontImage = public_path('virtual_backgrounds/Front.jpg');
         $backImage = public_path('virtual_backgrounds/Back.jpg');
-        $frontImage1 = public_path('uploads/ecard/'.$vcardId .'/Front.png');
-        $backImage1 = public_path('uploads/ecard/'.$vcardId.'/Back.png');
-        $directory = public_path('uploads/ecard/'.$vcardId);
+        $frontImage1 = public_path('uploads/ecard/' . $vcardId . '/Front.png');
+        $backImage1 = public_path('uploads/ecard/' . $vcardId . '/Back.png');
+        $directory = public_path('uploads/ecard/' . $vcardId);
 
 
         if (File::exists($qrCodeImage)) {
@@ -134,12 +145,14 @@ class ECardsController extends Controller
         return view();
     }
 
-    public function create($ecard): \Illuminate\View\View
+    public function create(NfcTemplate $ecard)
     {
         $vcards = Vcard::whereTenantId(getLogInTenantId())->where('status', Vcard::ACTIVE)->pluck('name', 'id')->toArray();
+        $ecardInstance = NfcTemplate::find($ecard->id);
 
-        return view('virtual-backgrounds.create', compact('vcards', 'ecard'));
+        return view('virtual-backgrounds.create', compact('vcards', 'ecardInstance'));
     }
+
 
     public function store(Request $request, $cardImageId)
     {

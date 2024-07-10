@@ -32,6 +32,124 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image/png" href="/images/vcard-logo.png" />
 
+    <style>
+        .product-card {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.55);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover .overlay {
+            opacity: 1;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .overlay-content {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .product-card:hover .overlay-content {
+            opacity: 1;
+            animation: slideUp 0.5s ease-in-out forwards 0.3s;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .overlay-content h2, .overlay-content p {
+            margin: 0;
+        }
+
+        .overlay-content button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            opacity: 0;
+        }
+
+        .product-card:hover .overlay-content button {
+            opacity: 1;
+            animation: buttonPop 0.3s ease-in-out forwards 0.6s;
+        }
+
+        @keyframes buttonPop {
+            0% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .overlay-content button:hover {
+            transform: scale(1.05);
+        }
+        @font-face {
+            font-family: 'Seasons';
+            src: url('path/to/Seasons-Regular.woff2') format('woff2'),
+            url('path/to/Seasons-Regular.woff') format('woff');
+        }
+
+        body {
+            font-family: 'Seasons', serif !important;
+        }
+
+        .sub-div img {
+            max-height: 100px;
+            max-width: 100px;
+        }
+    </style>
     {{-- bootstrap --}}
     <link rel="stylesheet" href="{{ asset('assets/css/new_home/bootstrap.min.css') }}">
     {{-- css links --}}
@@ -50,7 +168,7 @@
     <script type="text/javascript" src="{{ asset('assets/js/slider/js/slick.min.js') }}"></script>
     <script src="{{ mix('assets/js/custom/helpers.js') }}" defer></script>
     <script src="{{ mix('assets/js/custom/custom.js') }}" defer></script>
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     @php
         $langSession = Session::get('languageName');

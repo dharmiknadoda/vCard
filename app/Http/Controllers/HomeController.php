@@ -10,6 +10,8 @@ use App\Models\Feature;
 use App\Models\FrontFAQs;
 use App\Models\FrontTestimonial;
 use App\Models\Meta;
+use App\Models\NfcCardCategory;
+use App\Models\NfcTemplate;
 use App\Models\Plan;
 use App\Models\Setting;
 use Illuminate\Contracts\Foundation\Application;
@@ -28,28 +30,33 @@ class HomeController extends AppBaseController
      * @return Application|Factory|View
      */
     public function index()
-    {
-        $testimonials = FrontTestimonial::with('media')->get();
-        $faqs =  FrontFAQs::first();
-        $metas = Meta::first();
+{
+    $testimonials = FrontTestimonial::with('media')->get();
+    $faqs = FrontFAQs::first();
+    $metas = Meta::first();
 
-        if (! empty($metas)) {
-            $metas = $metas->toArray();
-        }
-
-        $setting = Setting::pluck('value', 'key')->toArray();
-
-        $aboutUS = AboutUs::with('media')->get()->toArray();
-
-        $features = Feature::all();
-
-        $plans = Plan::with(['currency', 'planFeature', 'hasZeroPlan'])/*->whereIsDefault(Plan::IS_DEACTIVE)*/->whereStatus(Plan::IS_ACTIVE)->get();
-
-        $homePage = getSuperAdminSettingValue('home_page_theme') == 1 ? 'home' : 'home1';
-        $view = getSuperAdminSettingValue('is_front_page') ? view("front.home.$homePage", compact('plans', 'setting', 'features', 'testimonials', 'aboutUS', 'metas', 'faqs')) : redirect(route('login'));
-
-        return $view;
+    if (!empty($metas)) {
+        $metas = $metas->toArray();
     }
+
+    $setting = Setting::pluck('value', 'key')->toArray();
+    $aboutUS = AboutUs::with('media')->get()->toArray();
+    $features = Feature::all();
+    $plans = Plan::with(['currency', 'planFeature', 'hasZeroPlan'])
+                  ->whereStatus(Plan::IS_ACTIVE)
+                  ->get();
+    
+    $data = NfcTemplate::all()->groupBy('category_id');
+    $categories = NfcCardCategory::whereIn('id', $data->keys())->pluck('name', 'id');
+
+    $homePage = getSuperAdminSettingValue('home_page_theme') == 1 ? 'home' : 'home1';
+    $view = getSuperAdminSettingValue('is_front_page') 
+                ? view("front.home.$homePage", compact('plans', 'setting', 'features', 'testimonials', 'aboutUS', 'metas', 'faqs', 'data', 'categories')) 
+                : redirect(route('login'));
+
+    return $view;
+}
+
 
     public function store(CreateContactRequest $request)
     {

@@ -5531,8 +5531,20 @@
 
             listenClick(".card-category-delete-btn", (function (e) {
                 var t = $(e.currentTarget).data("id"),
-                    a = "superAdmin" == $(e.currentTarget).data("name") ? Lang.get("js.admin") : Lang.get("Card Category");
+                    a = "superAdmin" == $(e.currentTarget).data("name") ? Lang.get("js.admin") : Lang.get("Card.Category");
                 deleteItem(route("card.category.destroy", t), a)
+            })),
+
+            listenClick(".nfc-category-delete-btn", (function (e) {
+                var t = $(e.currentTarget).data("id"),
+                    a = "superAdmin" == $(e.currentTarget).data("name") ? Lang.get("js.admin") : Lang.get("Card.Category");
+                deleteItem(route("sadmin.nfc.category.destroy", t), a)
+            })),
+
+            listenClick(".template-delete-btn", (function (e) {
+                var t = $(e.currentTarget).data("id"),
+                    a = "superAdmin" == $(e.currentTarget).data("name") ? Lang.get("js.admin") : Lang.get("Card.Category");
+                deleteItem(route("template.destroy", t), a)
             })),
 
             listenClick(".user-delete-btn", (function (e) {

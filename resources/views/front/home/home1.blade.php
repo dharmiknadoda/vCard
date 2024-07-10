@@ -2,22 +2,12 @@
 @section('title')
     {{ getAppName() }}
 @endsection
-<style>
-    @font-face {
-        font-family: 'Seasons';
-        src: url('path/to/Seasons-Regular.woff2') format('woff2'),
-        url('path/to/Seasons-Regular.woff') format('woff');
-    }
-    body {
-        font-family: 'Seasons', serif !important;
-    }
-</style>
 @section('content')
     <!-- start hero section -->
     <section class="hero-section position-relative pb-60">
         <div class="container"> @include('flash::message') </div>
         <div class="hero-bg-img text-end">
-            <img src="{{ asset('assets/img/new_home_page/hero-bg.png') }}" class="w-100 h-100" alt="hero-img" />
+            <img src="{{ asset('assets/img/new_home_page/hero-bg.png') }}" class="w-100 h-100" alt="hero-img"/>
         </div>
         <div class="container position-relative">
             <div class="row align-items-center">
@@ -33,8 +23,9 @@
                 </div>
                 <div class="col-lg-6 text-center mt-lg-0 mt-4">
                     <div class="hero-img mx-auto">
-                        <img src="{{ isset($setting['home_page_banner']) ? $setting['home_page_banner'] : asset('assets/img/new_front/hero-img.png') }}"
-                            alt="Vcard" class="zoom-in-zoom-out w-100 h-auto" />
+                        <img
+                            src="{{ isset($setting['home_page_banner']) ? $setting['home_page_banner'] : asset('assets/img/new_front/hero-img.png') }}"
+                            alt="Vcard" class="zoom-in-zoom-out w-100 h-auto"/>
                     </div>
 
                 </div>
@@ -68,7 +59,8 @@
     <!-- end hero section -->
     <div class="vcard-template-section pt-60 pb-100 position-relative">
         <div class="vcard-bg position-absolute">
-            <img src="{{ asset('assets/img/new_home_page/vcard-template-bg.png') }}" alt="vcard-bg" class="w-100 h-auto">
+            <img src="{{ asset('assets/img/new_home_page/vcard-template-bg.png') }}" alt="vcard-bg"
+                 class="w-100 h-auto">
         </div>
         <div class="plus-vector1 position-absolute">
             <img src="{{ asset('assets/img/new_home_page/plus-vector.png') }}" alt="vector" class="w-100 h-auto">
@@ -89,54 +81,126 @@
                     <div>
                         <div class="vcard-card">
                             <img src="{{ asset('assets/img/templates/home/vcard22.png') }}" class="w-100 vcard-img"
-                                alt="vcard-img">
+                                 alt="vcard-img">
                         </div>
                     </div>
                     <div>
                         <div class="vcard-card">
                             <img src="{{ asset('assets/img/templates/home/vcard12.png') }}" class="img-fluid vcard-img"
-                                alt="vcard-img">
+                                 alt="vcard-img">
                         </div>
                     </div>
                     <div>
                         <div class="vcard-card">
                             <img src="{{ asset('assets/img/templates/home/vcard13.png') }}" class="w-100 vcard-img "
-                                alt="vcard-img">
+                                 alt="vcard-img">
                         </div>
                     </div>
                     <div>
                         <div class="vcard-card">
                             <img src="{{ asset('assets/img/templates/home/vcard14.png') }}" class="w-100 vcard-img"
-                                alt="vcard-img">
+                                 alt="vcard-img">
                         </div>
                     </div>
                     <div>
                         <div class="vcard-card">
                             <img src="{{ asset('assets/img/templates/home/vcard15.png') }}" class="w-100 vcard-img"
-                                alt="vcard-img">
+                                 alt="vcard-img">
                         </div>
                     </div>
                     <div>
                         <div class="vcard-card">
                             <img src="{{ asset('assets/img/templates/home/vcard16.png') }}" class="w-100 vcard-img"
-                                alt="vcard-img">
+                                 alt="vcard-img">
                         </div>
                     </div>
                     <div>
                         <div class="vcard-card">
                             <img src="{{ asset('assets/img/templates/home/vcard17.png') }}" class="w-100 vcard-img"
-                                alt="vcard-img">
+                                 alt="vcard-img">
                         </div>
                     </div>
 
                 </div>
                 <div class="col-12 text-center mt-5">
                     <a href="{{ route('vcard-templates') }}" class="btn btn-primary-light" role="button"
-                        data-turbo="false">{{ __('messages.common.view_more') }}</a>
+                       data-turbo="false">{{ __('messages.common.view_more') }}</a>
                 </div>
             </div>
         </section>
     </div>
+
+    {{--    start nfc card--}}
+
+    <section class="nfc-section pb-100" id="">
+        <div class="container w-100">
+            <div class="section-heading text-center mb-60">
+                <h2 class="d-inline-block"> {{ __('messages.nfc_templates') }}</h2>
+            </div>
+            <div>
+                <ul class="nav nav-tabs p-3 border-0 ms-5">
+                    <a data-toggle="tab" class="active tab-nav btn btn-primary-light text-decoration-none" href="#all">All</a>
+                    @foreach ($categories as $categoryId => $categoryName)
+                        <a data-toggle="tab" class="ms-4 tab-nav btn btn-primary-light text-decoration-none" href="#category-{{ $categoryId }}">{{ $categoryName }}</a>
+                    @endforeach 
+                </ul>
+                
+                <div class="tab-content">
+                    <div id="all" class="tab-pane in active">
+                        <div class="row justify-content-around">
+                            @foreach ($data as $items)
+                                @foreach ($items as $item)
+                                    <div class="col-4 mt-4 d-flex justify-content-center">
+                                        <div>
+                                            <div class="product-card">
+                                                <div class="d-flex flex-column justify-content-around p-2 h-100">
+                                                    <img src="{{asset('assets/images/'.$item->ct_back)}}" alt="Product Image">
+                                                    <img src="{{asset('assets/images/'.$item->ct_front)}}" alt="Product Image">
+                                                </div>  
+                                                <div class="overlay">
+                                                    <div class="overlay-content">
+                                                        <h2>{{ $categories[$item->category_id] ?? 'Unknown Category' }}</h2>
+                                                        <button class="btn btn-primary btn-buy-now">Buy Now</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endforeach
+                        </div>
+                    </div>
+                
+                    @foreach ($data as $categoryId => $items)
+                        <div id="category-{{ $categoryId }}" class="tab-pane">
+                            <div class="row justify-content-around">
+                                @foreach ($items as $item)
+                                    <div class="col-4 mt-4 d-flex justify-content-center">
+                                        <div>
+                                            <div class="product-card">
+                                                <div class="d-flex flex-column justify-content-around p-2 h-100">
+                                                    <img src="{{asset('assets/images/'.$item->ct_back)}}" alt="Product Image">
+                                                    <img src="{{asset('assets/images/'.$item->ct_front)}}" alt="Product Image">
+                                                </div>  
+                                                <div class="overlay">
+                                                    <div class="overlay-content">
+                                                        <h2>{{ $categories[$item->category_id] ?? 'Unknown Category' }}</h2>
+                                                        <button class="btn btn-primary btn-buy-now">Buy Now</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                
+                 
+    </section>
+
+
     <!-- start features section -->
     <section class="features-section overflow-hidden" id="frontFeaturesTab">
         <div class="container">
@@ -149,7 +213,7 @@
                         <div class="feature-card">
                             <div class="card-img overflow-hidden">
                                 <img src="{{ $feature->profile_image }}" class="w-100 h-100 object-fit-cover"
-                                    alt="feature-img">
+                                     alt="feature-img">
                             </div>
                             <div class="card-body p-0">
                                 <h3 class="fs-18 mb-3">{{ $feature->name }}</h3>
@@ -175,8 +239,8 @@
                     <div class="col-lg-5 col-md-6 mb-md-0 mb-40">
                         <div class="interface-img">
                             <img class="h-auto w-100"
-                                src="{{ isset($aboutUS[0]['about_url']) ? $aboutUS[0]['about_url'] : asset('front/images/about-1.png') }}"
-                                alt="interface-img">
+                                 src="{{ isset($aboutUS[0]['about_url']) ? $aboutUS[0]['about_url'] : asset('front/images/about-1.png') }}"
+                                 alt="interface-img">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
@@ -206,8 +270,8 @@
                     <div class="col-lg-5 col-md-6 mb-md-0 mb-40">
                         <div class="interface-img">
                             <img class="h-auto w-100"
-                                src="{{ isset($aboutUS[1]['about_url']) ? $aboutUS[1]['about_url'] : asset('front/images/about-2.png') }}"
-                                alt="interface img" />
+                                 src="{{ isset($aboutUS[1]['about_url']) ? $aboutUS[1]['about_url'] : asset('front/images/about-2.png') }}"
+                                 alt="interface img"/>
                         </div>
                     </div>
                 </div>
@@ -217,8 +281,8 @@
                     <div class="col-lg-5 col-md-6 mb-md-0 mb-40">
                         <div class="interface-img">
                             <img class="h-auto w-100"
-                                src="{{ isset($aboutUS[2]['about_url']) ? $aboutUS[2]['about_url'] : asset('front/images/about-3.png') }}"
-                                alt="interface img" />
+                                 src="{{ isset($aboutUS[2]['about_url']) ? $aboutUS[2]['about_url'] : asset('front/images/about-3.png') }}"
+                                 alt="interface img"/>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
@@ -283,13 +347,13 @@
                                                     !getCurrentSubscription()->isExpired())
                                                 @if ($plan->price != 0)
                                                     <button type="button"
-                                                        class="btn btn-success rounded-3  mx-auto d-block cursor-remove-plan pricing-plan-button-active"
-                                                        data-id="{{ $plan->id }}" data-turbo="false">
+                                                            class="btn btn-success rounded-3  mx-auto d-block cursor-remove-plan pricing-plan-button-active"
+                                                            data-id="{{ $plan->id }}" data-turbo="false">
                                                         {{ __('messages.subscription.currently_active') }}</button>
                                                 @else
                                                     <button type="button"
-                                                        class="btn btn-info rounded-3  mx-auto d-block cursor-remove-plan"
-                                                        data-turbo="false">
+                                                            class="btn btn-info rounded-3  mx-auto d-block cursor-remove-plan"
+                                                            data-turbo="false">
                                                         {{ __('messages.subscription.renew_free_plan') }}
                                                     </button>
                                                 @endif
@@ -300,28 +364,28 @@
                                                         ($plan->price == 0 || $plan->price != 0))
                                                     @if ($plan->hasZeroPlan->count() == 0)
                                                         <a href="{{ $plan->price != 0 ? route('choose.payment.type', $plan->id) : 'javascript:void(0)' }}"
-                                                            class="btn btn-primary rounded-3 mx-auto {{ $plan->price == 0 ? 'freePayment' : '' }}"
-                                                            data-id="{{ $plan->id }}"
-                                                            data-plan-price="{{ $plan->price }}" data-turbo="false">
+                                                           class="btn btn-primary rounded-3 mx-auto {{ $plan->price == 0 ? 'freePayment' : '' }}"
+                                                           data-id="{{ $plan->id }}"
+                                                           data-plan-price="{{ $plan->price }}" data-turbo="false">
                                                             {{ __('messages.subscription.switch_plan') }}</a>
                                                     @else
                                                         <button type="button"
-                                                            class="btn btn-info rounded-3 mx-auto d-block cursor-remove-plan"
-                                                            data-turbo="false">
+                                                                class="btn btn-info rounded-3 mx-auto d-block cursor-remove-plan"
+                                                                data-turbo="false">
                                                             {{ __('messages.subscription.renew_free_plan') }}
                                                         </button>
                                                     @endif
                                                 @else
                                                     @if ($plan->hasZeroPlan->count() == 0)
                                                         <a href="{{ $plan->price != 0 ? route('choose.payment.type', $plan->id) : 'javascript:void(0)' }}"
-                                                            class="btn btn-primary rounded-3 mx-auto  {{ $plan->price == 0 ? 'freePayment' : '' }}"
-                                                            data-id="{{ $plan->id }}"
-                                                            data-plan-price="{{ $plan->price }}" data-turbo="false">
+                                                           class="btn btn-primary rounded-3 mx-auto  {{ $plan->price == 0 ? 'freePayment' : '' }}"
+                                                           data-id="{{ $plan->id }}"
+                                                           data-plan-price="{{ $plan->price }}" data-turbo="false">
                                                             {{ __('messages.subscription.choose_plan') }}</a>
                                                     @else
                                                         <button type="button"
-                                                            class="btn btn-info rounded-3 mx-auto d-block cursor-remove-plan"
-                                                            data-turbo="false">
+                                                                class="btn btn-info rounded-3 mx-auto d-block cursor-remove-plan"
+                                                                data-turbo="false">
                                                             {{ __('messages.subscription.renew_free_plan') }}
                                                         </button>
                                                     @endif
@@ -332,14 +396,14 @@
                                         <div class="mx-auto">
                                             @if ($plan->hasZeroPlan->count() == 0)
                                                 <a href="{{ $plan->price != 0 ? route('choose.payment.type', $plan->id) : 'javascript:void(0)' }}"
-                                                    class="btn btn-primary rounded-3 mx-auto  {{ $plan->price == 0 ? 'freePayment' : '' }}"
-                                                    data-id="{{ $plan->id }}" data-plan-price="{{ $plan->price }}"
-                                                    data-turbo="false">
+                                                   class="btn btn-primary rounded-3 mx-auto  {{ $plan->price == 0 ? 'freePayment' : '' }}"
+                                                   data-id="{{ $plan->id }}" data-plan-price="{{ $plan->price }}"
+                                                   data-turbo="false">
                                                     {{ __('messages.subscription.choose_plan') }}</a>
                                             @else
                                                 <button type="button"
-                                                    class="btn btn-info rounded-3 mx-auto d-block cursor-remove-plan"
-                                                    data-turbo="false">
+                                                        class="btn btn-info rounded-3 mx-auto d-block cursor-remove-plan"
+                                                        data-turbo="false">
                                                     {{ __('messages.subscription.renew_free_plan') }}
                                                 </button>
                                             @endif
@@ -371,11 +435,11 @@
                                         <div class="testimonial-card mb-60">
                                             <div class="quote-img">
                                                 <img src="{{ asset('assets/img/new_home_page/quote-img.png') }}"
-                                                    alt="quotation" class="w-sm-100 w-50 h-auto">
+                                                     alt="quotation" class="w-sm-100 w-50 h-auto">
                                             </div>
                                             <div class="profile-img">
                                                 <img src="{{ $testimonial->testimonial_url }}" alt="profile-img"
-                                                    class="w-100 h-100 object-fit-cover">
+                                                     class="w-100 h-100 object-fit-cover">
                                             </div>
                                             <div class="profile-desc ps-3">
                                                 <p class="fs-20 mb-0 fw-6">{{ $testimonial->name }}</p>
@@ -417,14 +481,14 @@
                                 <i class="fa-solid fa-at icon-purpul"></i>
                             </div>
                             <a href="mailto:{{ $setting['email'] }}"
-                                class="text-decoration-none text-secondary">{{ $setting['email'] }}</a>
+                               class="text-decoration-none text-secondary">{{ $setting['email'] }}</a>
                         </div>
                         <div class="d-flex align-items-center contact-info__block">
                             <div class="contact-icon fs-2 d-flex align-items-center justify-content-center">
                                 <i class="fa-solid fa-phone icon-purpul"></i>
                             </div>
                             <a href=" tel:{{ $setting['phone'] }}"
-                                class="text-decoration-none text-secondary">{{ '+' . $setting['prefix_code'] . ' ' . $setting['phone'] }}</a>
+                               class="text-decoration-none text-secondary">{{ '+' . $setting['prefix_code'] . ' ' . $setting['phone'] }}</a>
                         </div>
                     </div>
                 </div>
@@ -438,30 +502,33 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <input name="name" id="name" type="text" class="form-control front-input"
-                                        placeholder="{{ __('messages.front.enter_your_name') }}" required>
+                                           placeholder="{{ __('messages.front.enter_your_name') }}" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <input name="email" id="email" type="email" class="form-control front-input"
-                                        placeholder="{{ __('messages.front.enter_your_email') }}" required>
+                                           placeholder="{{ __('messages.front.enter_your_email') }}" required>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="mb-4">
                                     <input name="subject" id="subject" type="text" class="form-control front-input"
-                                        placeholder="{{ __('messages.common.subject') }}" required>
+                                           placeholder="{{ __('messages.common.subject') }}" required>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="mb-4">
-                                    <textarea name="message" id="message" rows="4" class="form-control h-100 form-textarea front-input"
-                                        placeholder="{{ __('messages.front.enter_your_message') }}" required></textarea>
+                                    <textarea name="message" id="message" rows="4"
+                                              class="form-control h-100 form-textarea front-input"
+                                              placeholder="{{ __('messages.front.enter_your_message') }}"
+                                              required></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-12 text-center">
-                                <input type="submit" id="submit" name="send" class="contact-section-submit-btn btn btn-primary w-auto front-input "
-                                    value="{{ __('messages.contact_us.send_message') }}">
+                                <input type="submit" id="submit" name="send"
+                                       class="contact-section-submit-btn btn btn-primary w-auto front-input "
+                                       value="{{ __('messages.contact_us.send_message') }}">
                             </div>
                         </div>
                     </form>
@@ -469,5 +536,10 @@
             </div>
         </div>
     </section>
+    <script>
+        $(".btn-buy-now").click(function (){
+            window.location.href = '{{ route('virtual-backgrounds.index') }}';
+        })
+    </script>
     <!-- end contact section -->
 @endsection

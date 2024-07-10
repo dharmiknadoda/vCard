@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Mail\TwoFaMail;
+use App\Models\TwoFactor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -38,23 +40,31 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $user = User::whereEmail($request->email)->first();
+        $TwoFaAuth = \App\Models\Setting::where('key', '2fa_auth')->pluck('value')->toArray();
+        if (!empty($user)) {
+            $getOtp = TwoFactor::where('email', $request->email)->pluck('otp')->first();
+            if ($getOtp == $request->otp_verify || $TwoFaAuth[0] == 0) {
+                TwoFactor::where('email', $request->email)->delete();
+                if ($user['email_verified_at'] != null) {
+                    if ($user['is_active'] == User::IS_ACTIVE) {
+                        $request->authenticate();
 
-        if (! empty($user)) {
-            if ($user['email_verified_at'] != null) {
-                if ($user['is_active'] == User::IS_ACTIVE) {
-                    $request->authenticate();
+                        $request->session()->regenerate();
 
-                    $request->session()->regenerate();
-
-                    return redirect()->intended(getDashboardURL());
+                        return redirect()->intended(getDashboardURL());
+                    } else {
+                        throw ValidationException::withMessages([
+                            'email' => __('auth.account_deactivate'),
+                        ]);
+                    }
                 } else {
                     throw ValidationException::withMessages([
-                        'email' => __('auth.account_deactivate'),
+                        'email' => __('auth.email_verify'),
                     ]);
                 }
             } else {
                 throw ValidationException::withMessages([
-                    'email' => __('auth.email_verify'),
+                    'email' => 'Otp does not match . please try again',
                 ]);
             }
         } else {
